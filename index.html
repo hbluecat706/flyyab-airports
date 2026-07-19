@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ابزار آزمایشی فرودگاه‌های ایران | FlyYab</title>
+  <meta name="description" content="نسخه آزمایشی ابزار تعاملی فرودگاه‌های ایران برای FlyYab">
+  <style>
+    :root{--b:#12337f;--b2:#285ff3;--g:#f6b23c;--bg:#f5f8ff;--t:#17213a;--m:#667085;--bd:#dfe7f5;--w:#fff;--gr:#12b76a}
+    *{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--t);font-family:Arial,Tahoma,sans-serif}body{min-height:100vh}
+    .app{width:min(1180px,100%);margin:0 auto;padding:18px}.hero{background:linear-gradient(135deg,var(--b),var(--b2));color:#fff;border-radius:24px;padding:28px 24px;box-shadow:0 16px 40px rgba(18,51,127,.18)}
+    .hero h1{margin:0 0 10px;font-size:clamp(26px,4vw,46px);line-height:1.25}.hero p{margin:0;max-width:760px;font-size:16px;line-height:1.9;color:rgba(255,255,255,.92)}
+    .layout{display:grid;grid-template-columns:360px 1fr;gap:18px;margin-top:18px}.panel,.map-card{background:var(--w);border:1px solid var(--bd);border-radius:22px;box-shadow:0 10px 30px rgba(24,39,75,.06)}.panel{padding:18px}
+    .label{display:block;font-size:14px;font-weight:700;margin-bottom:8px}.search{width:100%;border:1px solid #cfd9eb;border-radius:14px;padding:14px 15px;font-size:16px;outline:none}.search:focus{border-color:var(--b2);box-shadow:0 0 0 4px rgba(40,95,243,.1)}
+    .filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.filter-btn{border:1px solid var(--bd);background:#fff;border-radius:999px;padding:9px 13px;cursor:pointer;font-size:14px}.filter-btn.active{background:var(--b);color:#fff;border-color:var(--b)}
+    .count{font-size:13px;color:var(--m);margin:8px 0 12px}.airport-list{display:flex;flex-direction:column;gap:10px;max-height:600px;overflow:auto;padding-left:2px}.airport-item{border:1px solid var(--bd);border-radius:16px;padding:13px;cursor:pointer;background:#fff;transition:.2s ease}.airport-item:hover,.airport-item.active{border-color:var(--b2);transform:translateY(-1px);box-shadow:0 8px 20px rgba(40,95,243,.08)}
+    .airport-name{font-weight:800;font-size:15px;line-height:1.7}.airport-meta{font-size:13px;color:var(--m);margin-top:4px}.airport-codes{display:flex;gap:7px;margin-top:8px;direction:ltr;justify-content:flex-end}.code{font-size:12px;background:#eef3ff;color:var(--b);border-radius:8px;padding:5px 7px;font-weight:700}
+    .map-card{padding:14px;position:relative;overflow:hidden}.map-wrap{position:relative;aspect-ratio:1.48/1;min-height:520px;border-radius:18px;overflow:hidden;background:radial-gradient(circle at 30% 20%,rgba(40,95,243,.09),transparent 28%),linear-gradient(180deg,#eaf4ff 0%,#f8fbff 100%);border:1px solid #d8e4f5}
+    .iran-map{position:absolute;inset:5% 5% 7% 5%;width:90%;height:88%}.iran-shape{fill:#dbe8ff;stroke:#12337f;stroke-width:2.5;filter:drop-shadow(0 12px 20px rgba(18,51,127,.12))}.province-line{fill:none;stroke:#afc4e9;stroke-width:1.1;opacity:.7}
+    .pin{position:absolute;width:22px;height:22px;border:3px solid #fff;border-radius:50% 50% 50% 0;background:var(--gr);transform:translate(-50%,-50%) rotate(-45deg);box-shadow:0 7px 16px rgba(0,0,0,.18);cursor:pointer;z-index:4}.pin::after{content:"";position:absolute;width:6px;height:6px;border-radius:50%;background:#fff;top:5px;left:5px}.pin.active{background:var(--g);width:26px;height:26px;z-index:6}
+    .tooltip{position:absolute;z-index:10;background:#fff;border:1px solid var(--bd);border-radius:16px;padding:14px;min-width:240px;max-width:300px;box-shadow:0 18px 42px rgba(18,51,127,.18);display:none}.tooltip.show{display:block}.tooltip h3{margin:0 0 6px;font-size:16px}.tooltip p{margin:3px 0;font-size:13px;color:var(--m);line-height:1.7}.badge{display:inline-block;margin-top:7px;border-radius:999px;padding:6px 9px;background:#fff7e8;color:#8b5d00;font-size:12px;font-weight:700}
+    .note{margin-top:14px;background:#fff8ea;border:1px solid #f6d28d;border-radius:16px;padding:13px 14px;font-size:13px;line-height:1.8;color:#6f4a00}.footer{padding:18px 4px 4px;text-align:center;color:var(--m);font-size:13px}.empty{padding:24px 10px;text-align:center;color:var(--m)}
+    @media (max-width:900px){.app{padding:10px}.hero{border-radius:18px;padding:22px 18px}.layout{grid-template-columns:1fr}.map-card{order:1}.panel{order:2}.map-wrap{min-height:420px}.airport-list{max-height:none}}
+    @media (max-width:560px){.map-wrap{min-height:340px;aspect-ratio:1/1.05}.iran-map{inset:10% 1% 8% 1%;width:98%;height:82%}.tooltip{min-width:210px;max-width:86vw}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero"><h1>فرودگاه‌های ایران</h1><p>نام شهر، نام فرودگاه، کد یاتا یا ایکائو را جستجو کنید و موقعیت فرودگاه را روی نقشه ببینید. این نسخه آزمایشی پایه‌ای برای ابزار کامل فرودگاه‌های ایران و سپس فرودگاه‌های جهان است.</p></section>
+    <section class="layout">
+      <aside class="panel">
+        <label class="label" for="searchInput">جستجوی فرودگاه</label>
+        <input id="searchInput" class="search" type="search" placeholder="مثلاً تهران، IKA یا OIIE" autocomplete="off">
+        <div class="filters"><button class="filter-btn active" data-filter="all">همه</button><button class="filter-btn" data-filter="international">بین‌المللی</button><button class="filter-btn" data-filter="domestic">داخلی</button></div>
+        <div id="count" class="count"></div><div id="airportList" class="airport-list"></div>
+        <div class="note">این نسخه به هیچ سرویس نقشه خارجی وابسته نیست؛ بنابراین حتی در صورت فیلتر یا اختلال سرویس‌های نقشه، خود ابزار و پین‌ها نمایش داده می‌شوند.</div>
+      </aside>
+      <section class="map-card"><div id="mapWrap" class="map-wrap"><svg class="iran-map" viewBox="0 0 900 650" aria-label="نقشه شماتیک ایران"><path class="iran-shape" d="M178 126 L248 88 L340 80 L408 105 L492 88 L585 118 L665 176 L725 250 L760 330 L728 390 L736 468 L680 522 L590 544 L520 575 L430 560 L350 525 L272 518 L210 468 L180 405 L138 350 L150 280 L120 225 Z"/><path class="province-line" d="M250 95 L290 180 L240 255 L165 280"/><path class="province-line" d="M340 82 L365 180 L300 265 L315 390 L255 510"/><path class="province-line" d="M492 92 L470 190 L520 280 L472 390 L510 565"/><path class="province-line" d="M585 120 L565 220 L650 300 L605 420 L680 520"/><path class="province-line" d="M180 405 L300 390 L472 390 L605 420 L736 468"/><path class="province-line" d="M150 280 L300 265 L520 280 L650 300 L760 330"/></svg><div id="tooltip" class="tooltip"></div></div></section>
+    </section>
+    <div class="footer">نسخه آزمایشی ابزار فرودگاه‌های ایران — FlyYab</div>
+  </main>
+<script>
+const airports=[
+{id:"ika",name:"فرودگاه بین‌المللی امام خمینی",city:"تهران",iata:"IKA",icao:"OIIE",type:"international",x:46,y:38},
+{id:"thr",name:"فرودگاه مهرآباد",city:"تهران",iata:"THR",icao:"OIII",type:"domestic",x:43,y:34},
+{id:"mhd",name:"فرودگاه بین‌المللی شهید هاشمی‌نژاد",city:"مشهد",iata:"MHD",icao:"OIMM",type:"international",x:76,y:23},
+{id:"syz",name:"فرودگاه بین‌المللی شهید دستغیب",city:"شیراز",iata:"SYZ",icao:"OISS",type:"international",x:45,y:72},
+{id:"tbz",name:"فرودگاه بین‌المللی شهید مدنی",city:"تبریز",iata:"TBZ",icao:"OITT",type:"international",x:23,y:22},
+{id:"kih",name:"فرودگاه بین‌المللی کیش",city:"کیش",iata:"KIH",icao:"OIBK",type:"international",x:44,y:88},
+{id:"ifn",name:"فرودگاه بین‌المللی شهید بهشتی",city:"اصفهان",iata:"IFN",icao:"OIFM",type:"international",x:49,y:53},
+{id:"awz",name:"فرودگاه بین‌المللی اهواز",city:"اهواز",iata:"AWZ",icao:"OIAW",type:"international",x:27,y:60}
+];
+const state={query:"",filter:"all",selected:null},searchInput=document.getElementById("searchInput"),airportList=document.getElementById("airportList"),count=document.getElementById("count"),mapWrap=document.getElementById("mapWrap"),tooltip=document.getElementById("tooltip");
+const normalize=v=>String(v||"").trim().toLowerCase();
+function matches(a){const q=normalize(state.query);return(state.filter==="all"||a.type===state.filter)&&(!q||[a.name,a.city,a.iata,a.icao].some(v=>normalize(v).includes(q)))}
+function filtered(){return airports.filter(matches)}
+function createPins(){mapWrap.querySelectorAll(".pin").forEach(el=>el.remove());airports.forEach(a=>{const pin=document.createElement("button");pin.className="pin";pin.type="button";pin.dataset.id=a.id;pin.style.left=a.x+"%";pin.style.top=a.y+"%";pin.title=a.name;pin.setAttribute("aria-label",a.name);pin.addEventListener("click",()=>selectAirport(a.id,true));mapWrap.appendChild(pin)})}
+function renderList(){const items=filtered();count.textContent=items.length+" فرودگاه نمایش داده می‌شود";airportList.innerHTML="";if(!items.length){airportList.innerHTML='<div class="empty">فرودگاهی با این عبارت پیدا نشد.</div>';updatePinVisibility([]);hideTooltip();return}items.forEach(a=>{const el=document.createElement("div");el.className="airport-item"+(state.selected===a.id?" active":"");el.innerHTML=`<div class="airport-name">${a.name}</div><div class="airport-meta">${a.city} · ${a.type==="international"?"بین‌المللی":"داخلی"}</div><div class="airport-codes"><span class="code">${a.iata}</span><span class="code">${a.icao}</span></div>`;el.addEventListener("click",()=>selectAirport(a.id,true));airportList.appendChild(el)});updatePinVisibility(items.map(a=>a.id))}
+function updatePinVisibility(ids){mapWrap.querySelectorAll(".pin").forEach(pin=>{pin.style.display=ids.includes(pin.dataset.id)?"block":"none";pin.classList.toggle("active",pin.dataset.id===state.selected)})}
+function selectAirport(id,show){const a=airports.find(x=>x.id===id);if(!a)return;state.selected=id;renderList();if(show)showTooltip(a)}
+function showTooltip(a){tooltip.innerHTML=`<h3>${a.name}</h3><p>شهر: ${a.city}</p><p>کد یاتا: <b dir="ltr">${a.iata}</b></p><p>کد ایکائو: <b dir="ltr">${a.icao}</b></p><span class="badge">${a.type==="international"?"فرودگاه بین‌المللی":"فرودگاه داخلی"}</span>`;tooltip.style.left=Math.min(a.x,72)+"%";tooltip.style.top=Math.max(a.y-18,4)+"%";tooltip.classList.add("show")}
+function hideTooltip(){tooltip.classList.remove("show")}
+searchInput.addEventListener("input",e=>{state.query=e.target.value;state.selected=null;renderList()});document.querySelectorAll(".filter-btn").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");state.filter=btn.dataset.filter;state.selected=null;renderList()}));mapWrap.addEventListener("click",e=>{if(e.target===mapWrap||e.target.tagName==="svg"||e.target.tagName==="path")hideTooltip()});createPins();renderList();
+</script>
+</body>
+</html>
