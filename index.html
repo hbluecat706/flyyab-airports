@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>فرودگاه‌های ایران | Iran Airports Explorer | فلای‌یاب</title>
+<meta name="description" content="ابزار حرفه‌ای جستجو، مشاهده روی نقشه و مقایسه فرودگاه‌های ایران؛ همراه با کد IATA و ICAO، استان، شهر، فاصله و مسیر دسترسی.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:title" content="فرودگاه‌های ایران | Iran Airports Explorer">
+<meta property="og:description" content="ابزار جستجو و مقایسه فرودگاه‌های ایران از فلای‌یاب">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fa_IR">
+<link rel="preconnect" href="https://unpkg.com">
+<link rel="preconnect" href="https://tile.openstreetmap.org">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+:root{
+ --bg:#f5f5f7;--surface:rgba(255,255,255,.82);--solid:#fff;--text:#1d1d1f;--muted:#6e6e73;
+ --line:rgba(0,0,0,.08);--blue:#1677ff;--blue2:#0057d9;--cyan:#52c8ff;--green:#20a464;
+ --shadow:0 24px 70px rgba(20,32,58,.10);--soft:0 10px 35px rgba(20,32,58,.08);
+ --r:28px;--rs:18px
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Tahoma,Arial,sans-serif;line-height:1.75}
+button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+:focus-visible{outline:3px solid rgba(22,119,255,.28);outline-offset:2px}
+.shell{width:min(1200px,calc(100% - 32px));margin:auto}
+.topbar{position:sticky;top:0;z-index:1200;backdrop-filter:saturate(180%) blur(20px);background:rgba(255,255,255,.75);border-bottom:1px solid var(--line)}
+.topbar .shell{height:64px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.identity{display:flex;flex-direction:column;line-height:1.15}
+.identity strong{font-size:16px}.identity span{font-size:11px;color:var(--muted);direction:ltr;text-align:right;letter-spacing:.2px}
+.nav{display:flex;align-items:center;gap:22px;font-size:13px;color:var(--muted)}
+.nav a:hover{color:var(--text)}
+.flyyabLink{display:inline-flex;align-items:center;gap:7px;background:#111;color:#fff!important;padding:9px 14px;border-radius:999px;font-weight:700}
+.flyyabDot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 0 4px rgba(82,200,255,.18)}
+.hero{position:relative;overflow:hidden;padding:88px 0 44px;background:
+ radial-gradient(circle at 10% 15%,rgba(82,200,255,.25),transparent 32%),
+ radial-gradient(circle at 85% 25%,rgba(22,119,255,.14),transparent 30%),
+ linear-gradient(180deg,#fff 0%,#f5f5f7 100%)}
+.hero:after{content:"";position:absolute;width:460px;height:460px;border-radius:50%;left:-240px;top:30px;background:rgba(22,119,255,.06);filter:blur(3px)}
+.heroInner{position:relative;z-index:1;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--blue);font-size:13px;font-weight:800;background:rgba(22,119,255,.08);padding:7px 12px;border-radius:999px}
+.hero h1{font-size:clamp(44px,8vw,86px);line-height:1.05;letter-spacing:-2.6px;margin:24px auto 12px;max-width:980px}
+.hero h1 span{display:block;background:linear-gradient(90deg,var(--blue2),#34a7ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.latin{font-size:clamp(15px,2.2vw,22px);direction:ltr;color:#8b8b90;letter-spacing:.3px;margin-bottom:18px}
+.heroLead{max-width:760px;margin:0 auto;color:var(--muted);font-size:17px}
+.searchDock{max-width:850px;margin:34px auto 0;background:rgba(255,255,255,.86);border:1px solid rgba(255,255,255,.9);backdrop-filter:blur(18px);border-radius:24px;padding:8px;box-shadow:0 25px 65px rgba(31,71,139,.16);display:grid;grid-template-columns:42px 1fr auto;align-items:center}
+.searchIcon{font-size:22px;color:#8e8e93}
+.searchDock input{border:0;outline:0;background:transparent;padding:15px 2px;font-size:16px;min-width:0;color:var(--text)}
+.primary{border:0;background:linear-gradient(180deg,#2789ff,#0868e7);color:#fff;border-radius:17px;padding:14px 20px;font-weight:800;box-shadow:0 7px 20px rgba(22,119,255,.25)}
+.quick{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.chip{border:1px solid var(--line);background:rgba(255,255,255,.7);border-radius:999px;padding:7px 12px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:42px}
+.stat{background:var(--surface);border:1px solid rgba(255,255,255,.9);backdrop-filter:blur(18px);border-radius:22px;padding:20px;box-shadow:var(--soft)}
+.stat strong{display:block;font-size:28px;line-height:1.2}.stat span{font-size:12px;color:var(--muted)}
+.section{padding:76px 0}
+.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:22px}
+.sectionHead h2{font-size:clamp(29px,4vw,44px);margin:0;letter-spacing:-1px}
+.sectionHead p{margin:5px 0 0;color:var(--muted)}
+.segment{background:#e8e8ed;padding:4px;border-radius:14px;display:flex}
+.segment button{border:0;background:transparent;padding:9px 13px;border-radius:10px;color:var(--muted)}
+.segment button.active{background:white;color:var(--text);box-shadow:0 2px 8px rgba(0,0,0,.09)}
+.filters{display:grid;grid-template-columns:2fr repeat(3,1fr) auto;gap:10px;background:var(--solid);padding:10px;border:1px solid var(--line);border-radius:22px;box-shadow:var(--soft)}
+.filters input,.filters select{width:100%;border:1px solid var(--line);background:#fafafa;border-radius:14px;padding:12px 13px;outline:0;color:var(--text)}
+.secondary{border:1px solid var(--line);background:#fff;border-radius:14px;padding:11px 14px}
+.resultLine{display:flex;justify-content:space-between;align-items:center;padding:13px 4px;color:var(--muted);font-size:13px}
+.workspace{display:grid;grid-template-columns:410px minmax(0,1fr);height:690px;background:#fff;border:1px solid var(--line);border-radius:30px;overflow:hidden;box-shadow:var(--shadow)}
+.list{overflow:auto;padding:12px;background:#f7f7f9;overscroll-behavior:contain}
+.card{position:relative;background:#fff;border:1px solid var(--line);border-radius:20px;padding:17px;margin-bottom:10px;transition:.2s ease}
+.card:hover,.card.active{transform:translateY(-1px);border-color:rgba(22,119,255,.34);box-shadow:0 12px 30px rgba(22,119,255,.10)}
+.card h3{font-size:15px;margin:0 0 3px;padding-left:58px}.card .en{direction:ltr;text-align:right;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.code{position:absolute;left:14px;top:14px;background:#eef5ff;color:var(--blue2);padding:7px 9px;border-radius:11px;font-weight:900;direction:ltr}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin:11px 0}.tag{font-size:11px;background:#f3f3f5;padding:4px 8px;border-radius:999px;color:#606066}.tag.intl{color:#087448;background:#eaf8f1}
+.actions{display:grid;grid-template-columns:1fr auto auto;gap:7px}.actions button,.actions a{border:0;border-radius:11px;padding:9px 10px;text-align:center;font-size:12px}.details{background:#171719;color:#fff}.softBtn{background:#f0f0f3}
+.mapWrap{position:relative;min-width:0;background:#dfe7ef}
+#map{width:100%;height:100%;touch-action:pan-y}
+.mapShield{display:none;position:absolute;inset:0;z-index:700;background:linear-gradient(180deg,rgba(20,24,32,.08),rgba(20,24,32,.34));align-items:center;justify-content:center;padding:25px;text-align:center;color:#fff}
+.mapShield div{background:rgba(20,20,22,.80);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.16);border-radius:18px;padding:13px 18px;font-weight:800}
+.mapExit{display:none;position:absolute;z-index:800;top:12px;right:12px;border:0;background:rgba(20,20,22,.82);color:white;border-radius:999px;padding:9px 13px}
+.workspace.grid{display:block;height:auto;background:transparent;border:0;box-shadow:none;overflow:visible}
+.workspace.grid .mapWrap{display:none}.workspace.grid .list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:0;background:transparent;overflow:visible}.workspace.grid .card{margin:0}
+.contentGrid{display:grid;grid-template-columns:.8fr 1.6fr;gap:34px}
+.stickyIntro{position:sticky;top:90px;align-self:start}.stickyIntro h2{font-size:clamp(30px,4vw,48px);line-height:1.2;margin:0 0 14px}.stickyIntro p{color:var(--muted)}
+.article{background:#fff;border:1px solid var(--line);border-radius:30px;padding:clamp(22px,4vw,46px);box-shadow:var(--soft)}
+.article h3{font-size:23px;margin:32px 0 8px}.article h3:first-child{margin-top:0}.article p{color:#55555a}
+.tip{background:linear-gradient(135deg,#eef7ff,#f6fbff);border:1px solid rgba(22,119,255,.12);border-radius:20px;padding:18px;margin-top:24px}
+.cta{margin-top:32px;background:#101012;color:#fff;border-radius:25px;padding:26px;display:flex;align-items:center;justify-content:space-between;gap:20px}.cta p{color:#c7c7cc;margin:4px 0 0}.cta a{background:#fff;color:#111;padding:11px 16px;border-radius:999px;font-weight:800;white-space:nowrap}
+.faq{display:grid;gap:10px}.faq details{background:#fff;border:1px solid var(--line);border-radius:18px;padding:0 18px}.faq summary{cursor:pointer;font-weight:800;padding:17px 0;list-style:none}.faq summary::-webkit-details-marker{display:none}.faq p{color:var(--muted);margin:0 0 18px}
+.footer{padding:34px 0 44px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}.footerRow{display:flex;justify-content:space-between;gap:20px;align-items:center}.footer a{color:var(--blue)}
+.drawer{position:fixed;inset:0 0 0 auto;width:min(520px,100%);height:100%;z-index:2200;background:rgba(255,255,255,.94);backdrop-filter:blur(25px);transform:translateX(105%);transition:.32s cubic-bezier(.2,.8,.2,1);padding:28px;overflow:auto;box-shadow:-24px 0 70px rgba(0,0,0,.18)}
+.drawer.open{transform:none}.backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(3px);z-index:2100}.backdrop.open{display:block}
+.close{position:absolute;left:17px;top:17px;border:0;width:38px;height:38px;border-radius:50%;font-size:21px}.drawerCode{font-size:62px;font-weight:900;color:var(--blue);direction:ltr;line-height:1;margin-top:30px}.drawer h2{font-size:28px;line-height:1.35;margin:10px 0 2px}.drawer .enName{direction:ltr;text-align:right;color:var(--muted)}
+.detailGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:20px 0}.detail{background:#f5f5f7;border-radius:15px;padding:12px}.detail span{display:block;color:var(--muted);font-size:11px}.detail b{font-size:14px}
+.drawerActions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.drawerActions a{padding:12px;border-radius:14px;text-align:center;background:#111;color:#fff}.drawerActions a:last-child{background:#eef5ff;color:var(--blue2)}
+.compareBar{position:fixed;bottom:calc(16px + env(safe-area-inset-bottom));right:50%;transform:translate(50%,140px);z-index:1500;background:rgba(20,20,22,.9);backdrop-filter:blur(18px);color:#fff;border-radius:18px;padding:10px;display:flex;align-items:center;gap:10px;transition:.25s;box-shadow:0 15px 45px rgba(0,0,0,.28)}
+.compareBar.show{transform:translate(50%,0)}.compareBar button{border:0;border-radius:12px;padding:9px 12px}.compareGo{background:var(--blue);color:#fff}.compareClear{background:#343438;color:#fff}
+.compareTable{width:100%;border-collapse:collapse;margin-top:18px}.compareTable th,.compareTable td{text-align:right;padding:12px;border-bottom:1px solid var(--line)}
+.empty{text-align:center;color:var(--muted);padding:55px 20px}
+@media(max-width:980px){.workspace{grid-template-columns:360px 1fr}.filters{grid-template-columns:1fr 1fr}.filters .grow{grid-column:1/-1}.contentGrid{grid-template-columns:1fr}.stickyIntro{position:static}.workspace.grid .list{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){
+ .shell{width:min(100% - 22px,1200px)}.topbar .shell{height:58px}.nav a:not(.flyyabLink){display:none}
+ .hero{padding:60px 0 30px}.hero h1{font-size:46px;letter-spacing:-1.7px}.heroLead{font-size:15px}.searchDock{grid-template-columns:34px 1fr;margin-top:25px;border-radius:20px}.searchDock .primary{grid-column:1/-1;margin-top:2px}
+ .stats{grid-template-columns:1fr 1fr;gap:8px}.stat{padding:16px}.section{padding:54px 0}.sectionHead{align-items:flex-start;flex-direction:column}
+ .filters{grid-template-columns:1fr}.filters .grow{grid-column:auto}.workspace{display:flex;flex-direction:column;height:auto;border-radius:24px}.workspace .mapWrap{height:390px;order:-1}.workspace .list{max-height:640px}
+ .mapShield{display:flex}.mapExit.show{display:block}#map{touch-action:pan-y}
+ .workspace.grid .list{grid-template-columns:1fr}.article{border-radius:24px}.cta{align-items:flex-start;flex-direction:column}.footerRow{align-items:flex-start;flex-direction:column}
+ .drawer{padding:24px 17px}.compareBar{width:calc(100% - 22px);justify-content:center;flex-wrap:wrap}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+<script type="application/ld+json" id="schema"></script>
+</head>
+<body>
+<header class="topbar">
+ <div class="shell">
+  <a class="identity" href="#top" aria-label="فرودگاه‌های ایران">
+   <strong>فرودگاه‌های ایران</strong><span>Iran Airports Explorer</span>
+  </a>
+  <nav class="nav" aria-label="ناوبری">
+   <a href="#explore">ابزار</a><a href="#guide">راهنما</a><a href="#faq">سؤالات متداول</a>
+   <a class="flyyabLink" href="https://flyyab.ir/" target="_blank" rel="noopener"><i class="flyyabDot"></i> فلای‌یاب</a>
+  </nav>
+ </div>
+</header>
+
+<main id="top">
+<section class="hero">
+ <div class="shell heroInner">
+  <span class="eyebrow">ابزار هوشمند سفر از فلای‌یاب</span>
+  <h1>فرودگاه‌های ایران<span>ساده، سریع و روی نقشه.</span></h1>
+  <div class="latin">Iran Airports Explorer</div>
+  <p class="heroLead">نام شهر، فرودگاه، کد IATA یا ICAO را جستجو کنید؛ موقعیت هر فرودگاه را ببینید، نزدیک‌ترین گزینه را پیدا کنید و اطلاعات دو فرودگاه را کنار هم مقایسه کنید.</p>
+  <div class="searchDock">
+   <span class="searchIcon">⌕</span>
+   <input id="heroQ" type="search" autocomplete="off" placeholder="مثلاً تهران، مهرآباد، THR یا OIII" aria-label="جستجوی فرودگاه">
+   <button id="heroSearch" class="primary">جستجو در فرودگاه‌ها</button>
+  </div>
+  <div class="quick" id="quick"></div>
+  <div class="stats">
+   <div class="stat"><strong id="mTotal">—</strong><span>فرودگاه ثبت‌شده</span></div>
+   <div class="stat"><strong id="mIntl">—</strong><span>فرودگاه بین‌المللی</span></div>
+   <div class="stat"><strong id="mProv">—</strong><span>استان تحت پوشش</span></div>
+   <div class="stat"><strong>۲</strong><span>فرودگاه قابل مقایسه</span></div>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="explore">
+ <div class="shell">
+  <div class="sectionHead">
+   <div><h2>کاوش فرودگاه‌ها</h2><p>جستجو، فیلتر، نقشه و اطلاعات کاربردی در یک تجربه یکپارچه.</p></div>
+   <div class="segment"><button class="active" data-view="split">نقشه و فهرست</button><button data-view="grid">کارت‌ها</button></div>
+  </div>
+  <div class="filters">
+   <input class="grow" id="q" type="search" placeholder="نام فرودگاه، شهر، IATA یا ICAO">
+   <select id="province"><option value="">همه استان‌ها</option></select>
+   <select id="type"><option value="">همه فرودگاه‌ها</option><option value="international">بین‌المللی</option><option value="domestic">داخلی و منطقه‌ای</option></select>
+   <select id="sort"><option value="name">مرتب‌سازی: نام</option><option value="city">مرتب‌سازی: شهر</option><option value="distance">مرتب‌سازی: فاصله</option></select>
+   <button class="secondary" id="nearby">نزدیک‌ترین فرودگاه</button>
+  </div>
+  <div class="resultLine"><span id="resultCount">—</span><button class="secondary" id="reset">پاک‌کردن فیلترها</button></div>
+  <div class="workspace split" id="workspace">
+   <div class="list" id="list"></div>
+   <div class="mapWrap">
+    <div id="map" aria-label="نقشه فرودگاه‌های ایران"></div>
+    <button class="mapExit" id="mapExit">خروج از حالت نقشه</button>
+    <div class="mapShield" id="mapShield"><div>برای فعال‌کردن نقشه لمس کنید<br><small>برای اسکرول صفحه، نقشه در ابتدا قفل است</small></div></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="guide">
+ <div class="shell contentGrid">
+  <div class="stickyIntro">
+   <span class="eyebrow">راهنمای سفر هوایی</span>
+   <h2>اطلاعاتی که قبل از حرکت به فرودگاه به کارتان می‌آید.</h2>
+   <p>این بخش فقط برای موتور جستجو نوشته نشده؛ برای کاربری نوشته شده که می‌خواهد با اطمینان بیشتری سفر کند.</p>
+  </div>
+  <article class="article">
+   <h3>فرودگاه‌های ایران و کاربرد این ابزار</h3>
+   <p>شبکه فرودگاهی ایران شامل فرودگاه‌های بین‌المللی، داخلی و منطقه‌ای است. با ابزار «فرودگاه‌های ایران» می‌توانید نام فرودگاه، شهر و استان، کدهای هوانوردی و موقعیت جغرافیایی را در یک صفحه بررسی کنید. جستجو با نام فارسی، نام انگلیسی، شهر، کد IATA و کد ICAO انجام می‌شود.</p>
+   <h3>کد IATA چیست؟</h3>
+   <p>کد IATA معمولاً شناسه‌ای سه‌حرفی است که روی بلیط، کارت پرواز و برچسب بار دیده می‌شود. برای نمونه، THR برای مهرآباد و IKA برای فرودگاه امام خمینی استفاده می‌شود.</p>
+   <h3>کد ICAO چه کاربردی دارد؟</h3>
+   <p>کد ICAO چهارحرفی است و بیشتر در عملیات هوانوردی، کنترل ترافیک هوایی و سامانه‌های تخصصی استفاده می‌شود. این ابزار هر دو کد را کنار هم نمایش می‌دهد تا اطلاعات مسافری و فنی در دسترس باشد.</p>
+   <h3>چه زمانی در فرودگاه حاضر شویم؟</h3>
+   <p>برای پرواز داخلی معمولاً حضور ۹۰ تا ۱۲۰ دقیقه قبل از پرواز منطقی است. برای پرواز خارجی بهتر است حداقل سه ساعت زودتر برسید. زمان دقیق می‌تواند با توجه به فرودگاه، ایرلاین، فصل سفر و شرایط امنیتی متفاوت باشد.</p>
+   <div class="tip"><strong>قبل از حرکت بررسی کنید:</strong> ساعت و وضعیت پرواز، ترمینال، میزان بار مجاز، مدارک لازم و مسیر دسترسی به فرودگاه.</div>
+   <div class="cta">
+    <div><strong>آماده برنامه‌ریزی سفر هستید؟</strong><p>پروازهای داخلی و خارجی را در فلای‌یاب جستجو و مقایسه کنید.</p></div>
+    <a href="https://flyyab.ir/" target="_blank" rel="noopener">ورود به فلای‌یاب</a>
+   </div>
+  </article>
+ </div>
+</section>
+
+<section class="section" id="faq">
+ <div class="shell">
+  <div class="sectionHead"><div><h2>سؤالات متداول</h2><p>پاسخ‌های کوتاه برای پرسش‌های رایج درباره فرودگاه و سفر هوایی.</p></div></div>
+  <div class="faq">
+   <details><summary>کد IATA فرودگاه چیست؟</summary><p>یک شناسه سه‌حرفی است که معمولاً روی بلیط، کارت پرواز و برچسب بار دیده می‌شود.</p></details>
+   <details><summary>کد ICAO چه تفاوتی با IATA دارد؟</summary><p>IATA بیشتر در خدمات مسافری و فروش بلیط کاربرد دارد؛ ICAO بیشتر برای عملیات هوانوردی و کنترل پرواز استفاده می‌شود.</p></details>
+   <details><summary>چگونه نزدیک‌ترین فرودگاه را پیدا کنم؟</summary><p>دکمه «نزدیک‌ترین فرودگاه» را بزنید و اجازه دسترسی به موقعیت تقریبی را بدهید. سپس نتایج براساس فاصله مرتب می‌شوند.</p></details>
+   <details><summary>آیا وضعیت زنده پروازها نمایش داده می‌شود؟</summary><p>خیر. نسخه فعلی اطلاعات عمومی فرودگاه‌ها را نمایش می‌دهد. برای وضعیت زنده باید از ایرلاین یا سامانه رسمی اطلاعات پرواز استفاده کنید.</p></details>
+   <details><summary>برای پرواز داخلی چند ساعت زودتر برسیم؟</summary><p>معمولاً ۹۰ تا ۱۲۰ دقیقه پیش از پرواز؛ برای پرواز خارجی حداقل سه ساعت پیشنهاد می‌شود.</p></details>
+   <details><summary>آیا اطلاعات این ابزار قطعی و لحظه‌ای است؟</summary><p>اطلاعات برای راهنمایی عمومی ارائه شده و ممکن است تغییر کند. پیش از سفر، جزئیات را از منابع رسمی بررسی کنید.</p></details>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer class="footer"><div class="shell footerRow"><span>ابزار «فرودگاه‌های ایران» — Iran Airports Explorer</span><span>برای جستجو و خرید بلیط به <a href="https://flyyab.ir/" target="_blank" rel="noopener">فلای‌یاب</a> بروید.</span></div></footer>
+
+<div class="backdrop" id="backdrop"></div>
+<aside class="drawer" id="drawer" aria-hidden="true"><button class="close" id="close">×</button><div id="drawerBody"></div></aside>
+<div class="compareBar" id="compareBar"><span id="compareText">۰ فرودگاه انتخاب شده</span><button class="compareGo" id="compareGo">مقایسه</button><button class="compareClear" id="compareClear">پاک کردن</button></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const airports=[{"id":"abd","name":"فرودگاه بین‌المللی آیت‌الله جمی","en":"Abadan International Airport","city":"آبادان","province":"خوزستان","iata":"ABD","icao":"OIAA","type":"international","lat":30.367887,"lon":48.230075,"elevation_ft":"10","official":"https://fids.airport.ir/301/اطلاعات-پرواز-فرودگاه-آبادان","summary":"فرودگاه آبادان در استان خوزستان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=30.367887,48.230075"},{"id":"aeu","name":"فرودگاه شهدای ابوموسی","en":"Abu Musa Island Airport","city":"ابوموسی","province":"هرمزگان","iata":"AEU","icao":"OIBA","type":"domestic","lat":25.8757,"lon":55.033001,"elevation_ft":"23","official":"https://fids.airport.ir/","summary":"فرودگاه ابوموسی در استان هرمزگان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=25.8757,55.033001"},{"id":"akw","name":"فرودگاه آغاجاری","en":"Aghajari Airport","city":"آغاجاری","province":"خوزستان","iata":"AKW","icao":"OIAG","type":"domestic","lat":30.7444,"lon":49.6772,"elevation_ft":"88","official":"https://fids.airport.ir/","summary":"فرودگاه آغاجاری در استان خوزستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=30.7444,49.6772"},{"id":"awz","name":"فرودگاه بین‌المللی اهواز","en":"Ahvaz International Airport","city":"اهواز","province":"خوزستان","iata":"AWZ","icao":"OIAW","type":"international","lat":31.3364,"lon":48.763789,"elevation_ft":"66","official":"https://fids.airport.ir/401/اطلاعات-پرواز-فرودگاه-اهواز","summary":"فرودگاه اهواز در استان خوزستان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=31.3364,48.763789"},{"id":"ajk","name":"فرودگاه بین‌المللی اراک","en":"Arak Airport","city":"اراک","province":"مرکزی","iata":"AJK","icao":"OIHR","type":"international","lat":34.1381,"lon":49.847301,"elevation_ft":"5440","official":"https://fids.airport.ir/","summary":"فرودگاه اراک در استان مرکزی و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=34.1381,49.847301"},{"id":"adu","name":"فرودگاه اردبیل","en":"Ardabil Airport","city":"اردبیل","province":"اردبیل","iata":"ADU","icao":"OITL","type":"domestic","lat":38.3256988525,"lon":48.4244003296,"elevation_ft":"4315","official":"https://fids.airport.ir/113/اطلاعات-پرواز-فرودگاه-اردبيل","summary":"فرودگاه اردبیل در استان اردبیل و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=38.3256988525,48.4244003296"},{"id":"pgu","name":"فرودگاه بین‌المللی خلیج فارس","en":"Persian Gulf International Airport","city":"عسلویه","province":"بوشهر","iata":"PGU","icao":"OIBP","type":"international","lat":27.379601,"lon":52.737701,"elevation_ft":"27","official":"https://fids.airport.ir/","summary":"فرودگاه عسلویه در استان بوشهر و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=27.379601,52.737701"},{"id":"bxr","name":"فرودگاه بم","en":"Bam Airport","city":"بم","province":"کرمان","iata":"BXR","icao":"OIKM","type":"domestic","lat":29.0842,"lon":58.450001,"elevation_ft":"3231","official":"https://fids.airport.ir/","summary":"فرودگاه بم در استان کرمان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=29.0842,58.450001"},{"id":"bnd","name":"فرودگاه بین‌المللی بندرعباس","en":"Bandar Abbas International Airport","city":"بندرعباس","province":"هرمزگان","iata":"BND","icao":"OIKB","type":"international","lat":27.2183,"lon":56.3778,"elevation_ft":"22","official":"https://fids.airport.ir/117/اطلاعات-پرواز-فرودگاه-بندرعباس","summary":"فرودگاه بندرعباس در استان هرمزگان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=27.2183,56.3778"},{"id":"bdh","name":"فرودگاه بندرلنگه","en":"Bandar Lengeh International Airport","city":"بندرلنگه","province":"هرمزگان","iata":"BDH","icao":"OIBL","type":"domestic","lat":26.532283,"lon":54.82484,"elevation_ft":"67","official":"https://fids.airport.ir/","summary":"فرودگاه بندرلنگه در استان هرمزگان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=26.532283,54.82484"},{"id":"xbj","name":"فرودگاه بین‌المللی بیرجند","en":"Birjand International Airport","city":"بیرجند","province":"خراسان جنوبی","iata":"XBJ","icao":"OIMB","type":"international","lat":32.896525,"lon":59.281258,"elevation_ft":"4952","official":"https://fids.airport.ir/","summary":"فرودگاه بیرجند در استان خراسان جنوبی و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=32.896525,59.281258"},{"id":"bjb","name":"فرودگاه بجنورد","en":"Bojnord Airport","city":"بجنورد","province":"خراسان شمالی","iata":"BJB","icao":"OIMN","type":"domestic","lat":37.49300003051758,"lon":57.30820083618164,"elevation_ft":"3499","official":"https://fids.airport.ir/","summary":"فرودگاه بجنورد در استان خراسان شمالی و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=37.49300003051758,57.30820083618164"},{"id":"buz","name":"فرودگاه بوشهر","en":"Bushehr Airport","city":"بوشهر","province":"بوشهر","iata":"BUZ","icao":"OIBB","type":"international","lat":28.9447994232,"lon":50.8345985413,"elevation_ft":"68","official":"https://fids.airport.ir/104/اطلاعات-پرواز-فرودگاه-بوشهر","summary":"فرودگاه بوشهر در استان بوشهر و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=28.9447994232,50.8345985413"},{"id":"zbr","name":"فرودگاه بین‌المللی کنارک","en":"Chabahar Konarak International Airport","city":"چابهار","province":"سیستان و بلوچستان","iata":"ZBR","icao":"OIZC","type":"international","lat":25.44319,"lon":60.382167,"elevation_ft":"13","official":"https://fids.airport.ir/","summary":"فرودگاه چابهار در استان سیستان و بلوچستان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=25.44319,60.382167"},{"id":"def","name":"فرودگاه دزفول","en":"Dezful Airport","city":"دزفول","province":"خوزستان","iata":"DEF","icao":"OIAD","type":"domestic","lat":32.434399,"lon":48.397598,"elevation_ft":"474","official":"https://fids.airport.ir/","summary":"فرودگاه دزفول در استان خوزستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=32.434399,48.397598"},{"id":"gch","name":"فرودگاه گچساران","en":"Gachsaran Airport","city":"گچساران","province":"کهگیلویه و بویراحمد","iata":"GCH","icao":"OIAH","type":"domestic","lat":30.333869,"lon":50.833796,"elevation_ft":"2414","official":"https://fids.airport.ir/","summary":"فرودگاه گچساران در استان کهگیلویه و بویراحمد و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=30.333869,50.833796"},{"id":"gbt","name":"فرودگاه گرگان","en":"Gorgan Airport","city":"گرگان","province":"گلستان","iata":"GBT","icao":"OING","type":"domestic","lat":36.909400939899996,"lon":54.4012985229,"elevation_ft":"-24","official":"https://fids.airport.ir/202/اطلاعات-پرواز-فرودگاه-گرگان","summary":"فرودگاه گرگان در استان گلستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=36.909400939899996,54.4012985229"},{"id":"hdm","name":"فرودگاه همدان","en":"Hamadan Airport","city":"همدان","province":"همدان","iata":"HDM","icao":"OIHH","type":"domestic","lat":34.866416,"lon":48.56069,"elevation_ft":"5755","official":"https://fids.airport.ir/","summary":"فرودگاه همدان در استان همدان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=34.866416,48.56069"},{"id":"iil","name":"فرودگاه شهدای ایلام","en":"Ilam Airport","city":"ایلام","province":"ایلام","iata":"IIL","icao":"OICI","type":"domestic","lat":33.58660125732422,"lon":46.40480041503906,"elevation_ft":"4404","official":"https://fids.airport.ir/105/اطلاعات-پرواز-فرودگاه-ايلام","summary":"فرودگاه ایلام در استان ایلام و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=33.58660125732422,46.40480041503906"},{"id":"ika","name":"فرودگاه بین‌المللی امام خمینی","en":"Imam Khomeini International Airport","city":"تهران","province":"تهران","iata":"IKA","icao":"OIIE","type":"international","lat":35.416099548339844,"lon":51.152198791503906,"elevation_ft":"3305","official":"https://fids.airport.ir/","summary":"دروازه اصلی پروازهای بین‌المللی تهران؛ برای رسیدن به مرکز شهر زمان کافی در نظر بگیرید.","map":"https://www.google.com/maps/search/?api=1&query=35.416099548339844,51.152198791503906"},{"id":"thr","name":"فرودگاه مهرآباد","en":"Mehrabad International Airport","city":"تهران","province":"تهران","iata":"THR","icao":"OIII","type":"domestic","lat":35.689175,"lon":51.314392,"elevation_ft":"3962","official":"https://fids.airport.ir/2/اطلاعات-پرواز-فرودگاه-مهرآباد","summary":"مهم‌ترین فرودگاه پروازهای داخلی تهران؛ شماره ترمینال را پیش از حرکت بررسی کنید.","map":"https://www.google.com/maps/search/?api=1&query=35.689175,51.314392"},{"id":"ifn","name":"فرودگاه بین‌المللی شهید بهشتی","en":"Isfahan Shahid Beheshti International Airport","city":"اصفهان","province":"اصفهان","iata":"IFN","icao":"OIFM","type":"international","lat":32.755142,"lon":51.883877,"elevation_ft":"5059","official":"https://fids.airport.ir/114/اطلاعات-پرواز-فرودگاه-اصفهان","summary":"فرودگاه اصلی اصفهان برای پروازهای داخلی و شماری از مسیرهای بین‌المللی.","map":"https://www.google.com/maps/search/?api=1&query=32.755142,51.883877"},{"id":"oibj","name":"فرودگاه بین‌المللی جزیره هندورابی","en":"Jam Airport","city":"هندورابی","province":"هرمزگان","iata":"","icao":"OIBJ","type":"domestic","lat":27.820499,"lon":52.3522,"elevation_ft":"2173","official":"https://fids.airport.ir/","summary":"فرودگاه هندورابی در استان هرمزگان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=27.820499,52.3522"},{"id":"jyr","name":"فرودگاه جیرفت","en":"Jiroft Airport","city":"جیرفت","province":"کرمان","iata":"JYR","icao":"OIKJ","type":"domestic","lat":28.723519,"lon":57.675037,"elevation_ft":"2663","official":"https://fids.airport.ir/","summary":"فرودگاه جیرفت در استان کرمان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=28.723519,57.675037"},{"id":"ksh","name":"فرودگاه کرمانشاه","en":"Kermanshah International Airport","city":"کرمانشاه","province":"کرمانشاه","iata":"KSH","icao":"OICC","type":"international","lat":34.3459014893,"lon":47.1581001282,"elevation_ft":"4307","official":"https://fids.airport.ir/111/اطلاعات-پرواز-فرودگاه-کرمانشاه","summary":"فرودگاه کرمانشاه در استان کرمانشاه و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=34.3459014893,47.1581001282"},{"id":"ker","name":"فرودگاه بین‌المللی آیت‌الله هاشمی رفسنجانی","en":"Kerman International Airport","city":"کرمان","province":"کرمان","iata":"KER","icao":"OIKK","type":"international","lat":30.271276,"lon":56.949692,"elevation_ft":"5741","official":"https://fids.airport.ir/201/اطلاعات-پرواز-فرودگاه-کرمان","summary":"فرودگاه کرمان در استان کرمان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=30.271276,56.949692"},{"id":"khk","name":"فرودگاه خارک","en":"Khark Airport","city":"جزیره خارک","province":"بوشهر","iata":"KHK","icao":"OIBQ","type":"domestic","lat":29.260503,"lon":50.322193,"elevation_ft":"17","official":"https://fids.airport.ir/","summary":"فرودگاه جزیره خارک در استان بوشهر و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=29.260503,50.322193"},{"id":"khd","name":"فرودگاه خرم‌آباد","en":"Khoram Abad Airport","city":"خرم‌آباد","province":"لرستان","iata":"KHD","icao":"OICK","type":"domestic","lat":33.43539810180664,"lon":48.282901763916016,"elevation_ft":"3782","official":"https://fids.airport.ir/","summary":"فرودگاه خرم‌آباد در استان لرستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=33.43539810180664,48.282901763916016"},{"id":"khy","name":"فرودگاه خوی","en":"Khoy Airport","city":"خوی","province":"آذربایجان غربی","iata":"KHY","icao":"OITK","type":"domestic","lat":38.4275016784668,"lon":44.97359848022461,"elevation_ft":"3981","official":"https://fids.airport.ir/","summary":"فرودگاه خوی در استان آذربایجان غربی و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=38.4275016784668,44.97359848022461"},{"id":"kih","name":"فرودگاه بین‌المللی کیش","en":"Kish International Airport","city":"کیش","province":"هرمزگان","iata":"KIH","icao":"OIBK","type":"international","lat":26.525427,"lon":53.980462,"elevation_ft":"101","official":"https://fids.airport.ir/","summary":"فرودگاه اصلی جزیره کیش با فاصله کوتاه تا بیشتر هتل‌ها و مراکز گردشگری.","map":"https://www.google.com/maps/search/?api=1&query=26.525427,53.980462"},{"id":"lrr","name":"فرودگاه بین‌المللی لارستان","en":"Lar Airport","city":"لار","province":"فارس","iata":"LRR","icao":"OISL","type":"international","lat":27.6747,"lon":54.383301,"elevation_ft":"2641","official":"https://fids.airport.ir/","summary":"فرودگاه لار در استان فارس و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=27.6747,54.383301"},{"id":"lfm","name":"فرودگاه بین‌المللی لامرد","en":"Lamerd Airport","city":"لامرد","province":"فارس","iata":"LFM","icao":"OISR","type":"international","lat":27.3727,"lon":53.188801,"elevation_ft":"1337","official":"https://fids.airport.ir/","summary":"فرودگاه لامرد در استان فارس و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=27.3727,53.188801"},{"id":"mhd","name":"فرودگاه بین‌المللی شهید هاشمی‌نژاد","en":"Mashhad Shahid Hasheminejad International Airport","city":"مشهد","province":"خراسان رضوی","iata":"MHD","icao":"OIMM","type":"international","lat":36.234821,"lon":59.642949,"elevation_ft":"3263","official":"https://fids.airport.ir/102/اطلاعات-پرواز-فرودگاه-مشهد","summary":"یکی از پرترددترین فرودگاه‌های ایران با دسترسی مستقیم به شهر مشهد.","map":"https://www.google.com/maps/search/?api=1&query=36.234821,59.642949"},{"id":"mrx","name":"فرودگاه ماهشهر","en":"Mahshahr Airport","city":"ماهشهر","province":"خوزستان","iata":"MRX","icao":"OIAM","type":"domestic","lat":30.5562,"lon":49.151901,"elevation_ft":"8","official":"https://fids.airport.ir/","summary":"فرودگاه ماهشهر در استان خوزستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=30.5562,49.151901"},{"id":"nsh","name":"فرودگاه نوشهر","en":"Nowshahr Airport","city":"نوشهر","province":"مازندران","iata":"NSH","icao":"OINN","type":"domestic","lat":36.664286,"lon":51.46273,"elevation_ft":"-61","official":"https://fids.airport.ir/","summary":"فرودگاه نوشهر در استان مازندران و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=36.664286,51.46273"},{"id":"omh","name":"فرودگاه بین‌المللی ارومیه","en":"Urmia International Airport","city":"ارومیه","province":"آذربایجان غربی","iata":"OMH","icao":"OITR","type":"international","lat":37.6680984497,"lon":45.0686988831,"elevation_ft":"4343","official":"https://fids.airport.ir/110/اطلاعات-پرواز-فرودگاه-اروميه","summary":"فرودگاه ارومیه در استان آذربایجان غربی و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=37.6680984497,45.0686988831"},{"id":"pfq","name":"فرودگاه پارس‌آباد مغان","en":"Parsabad-Moghan Airport","city":"پارس‌آباد","province":"اردبیل","iata":"PFQ","icao":"OITP","type":"domestic","lat":39.6036,"lon":47.8815,"elevation_ft":"251","official":"https://fids.airport.ir/","summary":"فرودگاه پارس‌آباد در استان اردبیل و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=39.6036,47.8815"},{"id":"gsm","name":"فرودگاه بین‌المللی قشم","en":"Qeshm International Airport","city":"قشم","province":"هرمزگان","iata":"GSM","icao":"OIKQ","type":"international","lat":26.754639,"lon":55.902353,"elevation_ft":"45","official":"https://fids.airport.ir/","summary":"فرودگاه قشم در استان هرمزگان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=26.754639,55.902353"},{"id":"ras","name":"فرودگاه بین‌المللی سردار جنگل","en":"Rasht Sardar-e Jangal International Airport","city":"رشت","province":"گیلان","iata":"RAS","icao":"OIGG","type":"international","lat":37.323333,"lon":49.617778,"elevation_ft":"-40","official":"https://fids.airport.ir/203/اطلاعات-پرواز-فرودگاه-رشت","summary":"فرودگاه رشت در استان گیلان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=37.323333,49.617778"},{"id":"rjn","name":"فرودگاه رفسنجان","en":"Rafsanjan Airport","city":"رفسنجان","province":"کرمان","iata":"RJN","icao":"OIKR","type":"domestic","lat":30.298345,"lon":56.048979,"elevation_ft":"5298","official":"https://fids.airport.ir/","summary":"فرودگاه رفسنجان در استان کرمان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=30.298345,56.048979"},{"id":"sdg","name":"فرودگاه سنندج","en":"Sanandaj Airport","city":"سنندج","province":"کردستان","iata":"SDG","icao":"OICS","type":"domestic","lat":35.24589920043945,"lon":47.00920104980469,"elevation_ft":"4522","official":"https://fids.airport.ir/","summary":"فرودگاه سنندج در استان کردستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=35.24589920043945,47.00920104980469"},{"id":"cqd","name":"فرودگاه بین‌المللی شهدای شهرکرد","en":"Shahrekord Airport","city":"شهرکرد","province":"چهارمحال و بختیاری","iata":"CQD","icao":"OIFS","type":"international","lat":32.2971992493,"lon":50.842201232899995,"elevation_ft":"6723","official":"https://fids.airport.ir/","summary":"فرودگاه شهرکرد در استان چهارمحال و بختیاری و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=32.2971992493,50.842201232899995"},{"id":"sry","name":"فرودگاه دشت ناز","en":"Sari Dasht-e Naz Airport","city":"ساری","province":"مازندران","iata":"SRY","icao":"OINZ","type":"domestic","lat":36.644408,"lon":53.188761,"elevation_ft":"35","official":"https://fids.airport.ir/106/اطلاعات-پرواز-فرودگاه-ساري","summary":"فرودگاه ساری در استان مازندران و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=36.644408,53.188761"},{"id":"syz","name":"فرودگاه بین‌المللی شهید دستغیب","en":"Shiraz Shahid Dastgheib International Airport","city":"شیراز","province":"فارس","iata":"SYZ","icao":"OISS","type":"international","lat":29.5392,"lon":52.589802,"elevation_ft":"4927","official":"https://fids.airport.ir/1/اطلاعات-پرواز-فرودگاه-شيراز","summary":"فرودگاه اصلی شیراز و دروازه هوایی جنوب مرکزی ایران.","map":"https://www.google.com/maps/search/?api=1&query=29.5392,52.589802"},{"id":"syj","name":"فرودگاه سیرجان","en":"Sirjan Airport","city":"سیرجان","province":"کرمان","iata":"SYJ","icao":"OIKY","type":"domestic","lat":29.5509,"lon":55.672699,"elevation_ft":"5846","official":"https://fids.airport.ir/","summary":"فرودگاه سیرجان در استان کرمان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=29.5509,55.672699"},{"id":"sxi","name":"فرودگاه جزیره سیری","en":"Siri Airport","city":"جزیره سیری","province":"هرمزگان","iata":"SXI","icao":"OIBS","type":"domestic","lat":25.908899,"lon":54.539398,"elevation_ft":"43","official":"https://fids.airport.ir/","summary":"فرودگاه جزیره سیری در استان هرمزگان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=25.908899,54.539398"},{"id":"tcx","name":"فرودگاه طبس","en":"Tabas Airport","city":"طبس","province":"خراسان جنوبی","iata":"TCX","icao":"OIMT","type":"domestic","lat":33.667801,"lon":56.8927,"elevation_ft":"2312","official":"https://fids.airport.ir/","summary":"فرودگاه طبس در استان خراسان جنوبی و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=33.667801,56.8927"},{"id":"tbz","name":"فرودگاه بین‌المللی شهید مدنی","en":"Tabriz Shahid Madani International Airport","city":"تبریز","province":"آذربایجان شرقی","iata":"TBZ","icao":"OITT","type":"international","lat":38.1339,"lon":46.235001,"elevation_ft":"4459","official":"https://fids.airport.ir/103/اطلاعات-پرواز-فرودگاه-تبريز","summary":"فرودگاه تبریز در استان آذربایجان شرقی و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=38.1339,46.235001"},{"id":"omi","name":"فرودگاه امیدیه","en":"Omidiyeh Airport","city":"امیدیه","province":"خوزستان","iata":"OMI","icao":"OIAJ","type":"domestic","lat":30.835199,"lon":49.534901,"elevation_ft":"85","official":"https://fids.airport.ir/","summary":"فرودگاه امیدیه در استان خوزستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=30.835199,49.534901"},{"id":"yes","name":"فرودگاه یاسوج","en":"Yasuj Airport","city":"یاسوج","province":"کهگیلویه و بویراحمد","iata":"YES","icao":"OISY","type":"domestic","lat":30.702238,"lon":51.542988,"elevation_ft":"5939","official":"https://fids.airport.ir/","summary":"فرودگاه یاسوج در استان کهگیلویه و بویراحمد و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=30.702238,51.542988"},{"id":"azd","name":"فرودگاه بین‌المللی شهید صدوقی","en":"Yazd Shahid Sadooghi International Airport","city":"یزد","province":"یزد","iata":"AZD","icao":"OIYY","type":"international","lat":31.9048995972,"lon":54.2765007019,"elevation_ft":"4054","official":"https://fids.airport.ir/107/اطلاعات-پرواز-فرودگاه-يزد","summary":"فرودگاه یزد در استان یزد و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=31.9048995972,54.2765007019"},{"id":"acz","name":"فرودگاه زابل","en":"Zabol Airport","city":"زابل","province":"سیستان و بلوچستان","iata":"ACZ","icao":"OIZB","type":"domestic","lat":31.098301,"lon":61.5439,"elevation_ft":"1628","official":"https://fids.airport.ir/","summary":"فرودگاه زابل در استان سیستان و بلوچستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=31.098301,61.5439"},{"id":"zah","name":"فرودگاه بین‌المللی زاهدان","en":"Zahedan International Airport","city":"زاهدان","province":"سیستان و بلوچستان","iata":"ZAH","icao":"OIZH","type":"international","lat":29.4757,"lon":60.9062,"elevation_ft":"4564","official":"https://fids.airport.ir/109/اطلاعات-پرواز-فرودگاه-زاهدان","summary":"فرودگاه زاهدان در استان سیستان و بلوچستان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=29.4757,60.9062"},{"id":"jwn","name":"فرودگاه زنجان","en":"Zanjan Airport","city":"زنجان","province":"زنجان","iata":"JWN","icao":"OITZ","type":"domestic","lat":36.7737007141,"lon":48.3594017029,"elevation_ft":"5382","official":"https://fids.airport.ir/","summary":"فرودگاه زنجان در استان زنجان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=36.7737007141,48.3594017029"},{"id":"acp","name":"فرودگاه سهند","en":"Sahand Airport","city":"مراغه","province":"آذربایجان شرقی","iata":"ACP","icao":"OITM","type":"domestic","lat":37.347999572753906,"lon":46.127899169921875,"elevation_ft":"4396","official":"https://fids.airport.ir/","summary":"فرودگاه مراغه در استان آذربایجان شرقی و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=37.347999572753906,46.127899169921875"},{"id":"rzr","name":"فرودگاه رامسر","en":"Ramsar Airport","city":"رامسر","province":"مازندران","iata":"RZR","icao":"OINR","type":"domestic","lat":36.90701,"lon":50.687316,"elevation_ft":"-70","official":"https://fids.airport.ir/","summary":"فرودگاه رامسر در استان مازندران و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=36.90701,50.687316"},{"id":"rud","name":"فرودگاه شاهرود","en":"Shahrud International Airport","city":"شاهرود","province":"سمنان","iata":"RUD","icao":"OIMJ","type":"domestic","lat":36.424889,"lon":55.104289,"elevation_ft":"4215","official":"https://fids.airport.ir/","summary":"فرودگاه شاهرود در استان سمنان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=36.424889,55.104289"},{"id":"afz","name":"فرودگاه سبزوار","en":"Sabzevar National Airport","city":"سبزوار","province":"خراسان رضوی","iata":"AFZ","icao":"OIMS","type":"domestic","lat":36.16809844970703,"lon":57.59519958496094,"elevation_ft":"3010","official":"https://fids.airport.ir/","summary":"فرودگاه سبزوار در استان خراسان رضوی و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=36.16809844970703,57.59519958496094"},{"id":"kks","name":"فرودگاه کاشان","en":"Kashan Airport","city":"کاشان","province":"اصفهان","iata":"KKS","icao":"OIFK","type":"domestic","lat":33.895302,"lon":51.577,"elevation_ft":"3465","official":"https://fids.airport.ir/","summary":"فرودگاه کاشان در استان اصفهان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.","map":"https://www.google.com/maps/search/?api=1&query=33.895302,51.577"}];
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fa=n=>new Intl.NumberFormat('fa-IR').format(n);
+const norm=s=>(s||'').toString().toLowerCase().trim().replace(/ي/g,'ی').replace(/ك/g,'ک');
+let filtered=[...airports], markers=[], map, userPos=null, selected=[], activeId=null;
+const typeName=t=>t==='international'?'بین‌المللی':'داخلی و منطقه‌ای';
+const esc=s=>(s??'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+function distance(a,b,c,d){const R=6371,x=(c-a)*Math.PI/180,y=(d-b)*Math.PI/180,z=Math.sin(x/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(y/2)**2;return 2*R*Math.asin(Math.sqrt(z))}
+function setup(){
+ $('#mTotal').textContent=fa(airports.length);$('#mIntl').textContent=fa(airports.filter(a=>a.type==='international').length);$('#mProv').textContent=fa(new Set(airports.map(a=>a.province)).size);
+ [...new Set(airports.map(a=>a.province))].sort((a,b)=>a.localeCompare(b,'fa')).forEach(p=>$('#province').insertAdjacentHTML('beforeend',`<option>${esc(p)}</option>`));
+ $('#quick').innerHTML=['تهران','مشهد','کیش','بین‌المللی'].map(x=>`<button class="chip" data-quick="${x}">${x}</button>`).join('');
+ map=L.map('map',{zoomControl:false,scrollWheelZoom:false,dragging:innerWidth>720,tap:innerWidth>720}).setView([32.2,53.7],5);
+ L.control.zoom({position:'bottomleft'}).addTo(map);
+ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:18}).addTo(map);
+ bind();apply();schema();sendHeight();
+}
+function bind(){
+ ['q','province','type','sort'].forEach(id=>$('#'+id).addEventListener(id==='q'?'input':'change',apply));
+ $('#heroSearch').onclick=()=>{ $('#q').value=$('#heroQ').value; apply(); $('#explore').scrollIntoView({behavior:'smooth'}) };
+ $('#heroQ').addEventListener('keydown',e=>{if(e.key==='Enter')$('#heroSearch').click()});
+ $('#reset').onclick=()=>{['q','province','type'].forEach(id=>$('#'+id).value='');$('#sort').value='name';userPos=null;apply()};
+ $('#nearby').onclick=findNearby;
+ $('#close').onclick=closeDrawer;$('#backdrop').onclick=closeDrawer;
+ $('#compareClear').onclick=()=>{selected=[];updateCompare();render()};
+ $('#compareGo').onclick=showCompare;
+ $$('[data-view]').forEach(b=>b.onclick=()=>{ $$('[data-view]').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#workspace').className='workspace '+b.dataset.view;if(b.dataset.view==='split')setTimeout(()=>map.invalidateSize(),100);sendHeight()});
+ $('#quick').onclick=e=>{const b=e.target.closest('[data-quick]');if(!b)return;const v=b.dataset.quick;if(v==='بین‌المللی')$('#type').value='international';else $('#q').value=v;apply();$('#explore').scrollIntoView({behavior:'smooth'})};
+ $('#mapShield').onclick=activateMap;$('#mapExit').onclick=deactivateMap;
+ window.addEventListener('resize',()=>{if(innerWidth>720)activateMap(true);sendHeight()});
+}
+function apply(){
+ const q=norm($('#q').value),p=$('#province').value,t=$('#type').value,s=$('#sort').value;
+ filtered=airports.filter(a=>(!q||norm([a.name,a.en,a.city,a.province,a.iata,a.icao].join(' ')).includes(q))&&(!p||a.province===p)&&(!t||a.type===t));
+ if(userPos)filtered.forEach(a=>a.distance=distance(userPos.lat,userPos.lon,a.lat,a.lon));
+ filtered.sort((a,b)=>s==='city'?a.city.localeCompare(b.city,'fa'):s==='distance'?(a.distance??99999)-(b.distance??99999):a.name.localeCompare(b.name,'fa'));
+ render();renderMap();$('#resultCount').textContent=`${fa(filtered.length)} فرودگاه پیدا شد`;sendHeight();
+}
+function render(){
+ $('#list').innerHTML=filtered.length?filtered.map(a=>`<article class="card ${activeId===a.id?'active':''}" data-id="${a.id}">
+ <span class="code">${esc(a.iata||'—')}</span><h3>${esc(a.name)}</h3><div class="en">${esc(a.en)}</div>
+ <div class="meta"><span class="tag">${esc(a.city)} · ${esc(a.province)}</span><span class="tag ${a.type==='international'?'intl':''}">${typeName(a.type)}</span>${a.distance!=null?`<span class="tag">${fa(Math.round(a.distance))} کیلومتر</span>`:''}</div>
+ <div class="actions"><button class="details" data-detail="${a.id}">جزئیات</button><button class="softBtn" data-map="${a.id}" aria-label="نمایش روی نقشه">⌖</button><button class="softBtn ${selected.includes(a.id)?'selected':''}" data-compare="${a.id}" aria-label="مقایسه">${selected.includes(a.id)?'✓':'＋'}</button></div></article>`).join(''):'<div class="empty">فرودگاهی با این مشخصات پیدا نشد.</div>';
+ $('#list').onclick=e=>{const d=e.target.closest('[data-detail]'),m=e.target.closest('[data-map]'),c=e.target.closest('[data-compare]');if(d)openAirport(d.dataset.detail);if(m)focusAirport(m.dataset.map);if(c)toggleCompare(c.dataset.compare)};
+}
+function renderMap(){
+ markers.forEach(m=>m.remove());markers=[];
+ filtered.forEach(a=>{const icon=L.divIcon({className:'',html:`<div style="width:30px;height:30px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:${a.type==='international'?'#1677ff':'#171719'};border:3px solid white;box-shadow:0 5px 15px #0004"><span style="display:block;transform:rotate(45deg);color:white;text-align:center;line-height:24px;font-size:10px">✈</span></div>`,iconSize:[30,30],iconAnchor:[15,30]});
+ const mk=L.marker([a.lat,a.lon],{icon}).addTo(map).bindPopup(`<b>${esc(a.name)}</b><br>${esc(a.city)} · ${esc(a.iata||'—')}`);
+ mk.on('click',()=>{activeId=a.id;render()});markers.push(mk)});
+}
+function openAirport(id){
+ const a=airports.find(x=>x.id===id);if(!a)return;activeId=id;render();
+ $('#drawerBody').innerHTML=`<div class="drawerCode">${esc(a.iata||'—')}</div><h2>${esc(a.name)}</h2><div class="enName">${esc(a.en)}</div>
+ <div class="detailGrid"><div class="detail"><span>شهر</span><b>${esc(a.city)}</b></div><div class="detail"><span>استان</span><b>${esc(a.province)}</b></div><div class="detail"><span>کد ICAO</span><b dir="ltr">${esc(a.icao||'—')}</b></div><div class="detail"><span>نوع فرودگاه</span><b>${typeName(a.type)}</b></div><div class="detail"><span>ارتفاع</span><b>${a.elevation_ft?fa(a.elevation_ft)+' فوت':'—'}</b></div><div class="detail"><span>مختصات</span><b dir="ltr">${a.lat.toFixed(4)}, ${a.lon.toFixed(4)}</b></div></div>
+ <p>${esc(a.summary||'اطلاعات عمومی این فرودگاه در ابزار فرودگاه‌های ایران نمایش داده شده است.')}</p>
+ <div class="drawerActions"><a href="${esc(a.map)}" target="_blank" rel="noopener">مسیریابی</a><a href="https://flyyab.ir/" target="_blank" rel="noopener">جستجوی بلیط در فلای‌یاب</a></div>`;
+ $('#drawer').classList.add('open');$('#backdrop').classList.add('open');$('#drawer').setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+}
+function closeDrawer(){$('#drawer').classList.remove('open');$('#backdrop').classList.remove('open');$('#drawer').setAttribute('aria-hidden','true');document.body.style.overflow=''}
+function focusAirport(id){const a=airports.find(x=>x.id===id);if(!a)return;activeId=id;render();$('#workspace').className='workspace split';$$('[data-view]').forEach(x=>x.classList.toggle('active',x.dataset.view==='split'));activateMap(true);setTimeout(()=>{map.invalidateSize();map.flyTo([a.lat,a.lon],10,{duration:.7});markers.find(m=>m.getLatLng().lat===a.lat&&m.getLatLng().lng===a.lon)?.openPopup()},100)}
+function toggleCompare(id){selected.includes(id)?selected=selected.filter(x=>x!==id):selected.length<2&&selected.push(id);updateCompare();render()}
+function updateCompare(){$('#compareText').textContent=`${fa(selected.length)} فرودگاه انتخاب شده`;$('#compareBar').classList.toggle('show',selected.length>0)}
+function showCompare(){
+ if(selected.length!==2){alert('برای مقایسه، دو فرودگاه انتخاب کنید.');return}
+ const [a,b]=selected.map(id=>airports.find(x=>x.id===id));
+ $('#drawerBody').innerHTML=`<h2>مقایسه فرودگاه‌ها</h2><table class="compareTable"><tr><th></th><th>${esc(a.iata)}</th><th>${esc(b.iata)}</th></tr>${[['نام','name'],['شهر','city'],['استان','province'],['ICAO','icao']].map(([l,k])=>`<tr><th>${l}</th><td>${esc(a[k])}</td><td>${esc(b[k])}</td></tr>`).join('')}<tr><th>نوع</th><td>${typeName(a.type)}</td><td>${typeName(b.type)}</td></tr></table>`;
+ $('#drawer').classList.add('open');$('#backdrop').classList.add('open');document.body.style.overflow='hidden';
+}
+function findNearby(){
+ if(!navigator.geolocation){alert('مرورگر شما موقعیت مکانی را پشتیبانی نمی‌کند.');return}
+ $('#nearby').textContent='در حال دریافت موقعیت…';
+ navigator.geolocation.getCurrentPosition(p=>{userPos={lat:p.coords.latitude,lon:p.coords.longitude};$('#sort').value='distance';$('#nearby').textContent='نزدیک‌ترین فرودگاه';apply();if(filtered[0])focusAirport(filtered[0].id)},()=>{$('#nearby').textContent='نزدیک‌ترین فرودگاه';alert('دسترسی به موقعیت مکانی انجام نشد.')},{enableHighAccuracy:false,timeout:10000});
+}
+function activateMap(silent=false){if(innerWidth<=720){map.dragging.enable();map.touchZoom.enable();$('#mapShield').style.display='none';$('#mapExit').classList.add('show');$('#map').style.touchAction='none'}else{$('#mapShield').style.display='none';map.dragging.enable()}if(!silent)setTimeout(()=>map.invalidateSize(),50)}
+function deactivateMap(){if(innerWidth<=720){map.dragging.disable();map.touchZoom.disable();$('#mapShield').style.display='flex';$('#mapExit').classList.remove('show');$('#map').style.touchAction='pan-y'}}
+function schema(){
+ const data={"@context":"https://schema.org","@graph":[{"@type":"SoftwareApplication","name":"فرودگاه‌های ایران","alternateName":"Iran Airports Explorer","applicationCategory":"TravelApplication","operatingSystem":"Web","description":"ابزار جستجو، مشاهده روی نقشه و مقایسه فرودگاه‌های ایران.","offers":{"@type":"Offer","price":"0","priceCurrency":"IRR"}},{"@type":"FAQPage","mainEntity":[
+ {"@type":"Question","name":"کد IATA فرودگاه چیست؟","acceptedAnswer":{"@type":"Answer","text":"یک شناسه سه‌حرفی است که معمولاً روی بلیط، کارت پرواز و برچسب بار دیده می‌شود."}},
+ {"@type":"Question","name":"کد ICAO چه تفاوتی با IATA دارد؟","acceptedAnswer":{"@type":"Answer","text":"IATA بیشتر در خدمات مسافری و ICAO بیشتر در عملیات هوانوردی کاربرد دارد."}},
+ {"@type":"Question","name":"چگونه نزدیک‌ترین فرودگاه را پیدا کنم؟","acceptedAnswer":{"@type":"Answer","text":"دکمه نزدیک‌ترین فرودگاه را بزنید و اجازه دسترسی به موقعیت تقریبی را بدهید."}},
+ {"@type":"Question","name":"آیا وضعیت زنده پروازها نمایش داده می‌شود؟","acceptedAnswer":{"@type":"Answer","text":"خیر، نسخه فعلی اطلاعات عمومی فرودگاه‌ها را نمایش می‌دهد."}}
+ ]}]};$('#schema').textContent=JSON.stringify(data);
+}
+function sendHeight(){setTimeout(()=>{try{parent.postMessage({type:'flyyab-airports-height',height:document.documentElement.scrollHeight},'*')}catch(e){}},100)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+</script>
+</body></html>
