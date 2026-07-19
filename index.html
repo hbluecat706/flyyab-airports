@@ -1,66 +1,2298 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>ابزار آزمایشی فرودگاه‌های ایران | FlyYab</title>
-  <meta name="description" content="نسخه آزمایشی ابزار تعاملی فرودگاه‌های ایران برای FlyYab">
-  <style>
-    :root{--b:#12337f;--b2:#285ff3;--g:#f6b23c;--bg:#f5f8ff;--t:#17213a;--m:#667085;--bd:#dfe7f5;--w:#fff;--gr:#12b76a}
-    *{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--t);font-family:Arial,Tahoma,sans-serif}body{min-height:100vh}
-    .app{width:min(1180px,100%);margin:0 auto;padding:18px}.hero{background:linear-gradient(135deg,var(--b),var(--b2));color:#fff;border-radius:24px;padding:28px 24px;box-shadow:0 16px 40px rgba(18,51,127,.18)}
-    .hero h1{margin:0 0 10px;font-size:clamp(26px,4vw,46px);line-height:1.25}.hero p{margin:0;max-width:760px;font-size:16px;line-height:1.9;color:rgba(255,255,255,.92)}
-    .layout{display:grid;grid-template-columns:360px 1fr;gap:18px;margin-top:18px}.panel,.map-card{background:var(--w);border:1px solid var(--bd);border-radius:22px;box-shadow:0 10px 30px rgba(24,39,75,.06)}.panel{padding:18px}
-    .label{display:block;font-size:14px;font-weight:700;margin-bottom:8px}.search{width:100%;border:1px solid #cfd9eb;border-radius:14px;padding:14px 15px;font-size:16px;outline:none}.search:focus{border-color:var(--b2);box-shadow:0 0 0 4px rgba(40,95,243,.1)}
-    .filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}.filter-btn{border:1px solid var(--bd);background:#fff;border-radius:999px;padding:9px 13px;cursor:pointer;font-size:14px}.filter-btn.active{background:var(--b);color:#fff;border-color:var(--b)}
-    .count{font-size:13px;color:var(--m);margin:8px 0 12px}.airport-list{display:flex;flex-direction:column;gap:10px;max-height:600px;overflow:auto;padding-left:2px}.airport-item{border:1px solid var(--bd);border-radius:16px;padding:13px;cursor:pointer;background:#fff;transition:.2s ease}.airport-item:hover,.airport-item.active{border-color:var(--b2);transform:translateY(-1px);box-shadow:0 8px 20px rgba(40,95,243,.08)}
-    .airport-name{font-weight:800;font-size:15px;line-height:1.7}.airport-meta{font-size:13px;color:var(--m);margin-top:4px}.airport-codes{display:flex;gap:7px;margin-top:8px;direction:ltr;justify-content:flex-end}.code{font-size:12px;background:#eef3ff;color:var(--b);border-radius:8px;padding:5px 7px;font-weight:700}
-    .map-card{padding:14px;position:relative;overflow:hidden}.map-wrap{position:relative;aspect-ratio:1.48/1;min-height:520px;border-radius:18px;overflow:hidden;background:radial-gradient(circle at 30% 20%,rgba(40,95,243,.09),transparent 28%),linear-gradient(180deg,#eaf4ff 0%,#f8fbff 100%);border:1px solid #d8e4f5}
-    .iran-map{position:absolute;inset:5% 5% 7% 5%;width:90%;height:88%}.iran-shape{fill:#dbe8ff;stroke:#12337f;stroke-width:2.5;filter:drop-shadow(0 12px 20px rgba(18,51,127,.12))}.province-line{fill:none;stroke:#afc4e9;stroke-width:1.1;opacity:.7}
-    .pin{position:absolute;width:22px;height:22px;border:3px solid #fff;border-radius:50% 50% 50% 0;background:var(--gr);transform:translate(-50%,-50%) rotate(-45deg);box-shadow:0 7px 16px rgba(0,0,0,.18);cursor:pointer;z-index:4}.pin::after{content:"";position:absolute;width:6px;height:6px;border-radius:50%;background:#fff;top:5px;left:5px}.pin.active{background:var(--g);width:26px;height:26px;z-index:6}
-    .tooltip{position:absolute;z-index:10;background:#fff;border:1px solid var(--bd);border-radius:16px;padding:14px;min-width:240px;max-width:300px;box-shadow:0 18px 42px rgba(18,51,127,.18);display:none}.tooltip.show{display:block}.tooltip h3{margin:0 0 6px;font-size:16px}.tooltip p{margin:3px 0;font-size:13px;color:var(--m);line-height:1.7}.badge{display:inline-block;margin-top:7px;border-radius:999px;padding:6px 9px;background:#fff7e8;color:#8b5d00;font-size:12px;font-weight:700}
-    .note{margin-top:14px;background:#fff8ea;border:1px solid #f6d28d;border-radius:16px;padding:13px 14px;font-size:13px;line-height:1.8;color:#6f4a00}.footer{padding:18px 4px 4px;text-align:center;color:var(--m);font-size:13px}.empty{padding:24px 10px;text-align:center;color:var(--m)}
-    @media (max-width:900px){.app{padding:10px}.hero{border-radius:18px;padding:22px 18px}.layout{grid-template-columns:1fr}.map-card{order:1}.panel{order:2}.map-wrap{min-height:420px}.airport-list{max-height:none}}
-    @media (max-width:560px){.map-wrap{min-height:340px;aspect-ratio:1/1.05}.iran-map{inset:10% 1% 8% 1%;width:98%;height:82%}.tooltip{min-width:210px;max-width:86vw}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مرجع کامل فرودگاه‌های ایران؛ کد یاتا، ایکائو، نقشه و اطلاعات پرواز | FlyYab</title>
+<meta name="description" content="مرجع جامع فرودگاه‌های ایران در فلای‌یاب؛ جستجو میان 59 فرودگاه، مشاهده کد یاتا و ایکائو، نوع فرودگاه، موقعیت روی نقشه و دسترسی به اطلاعات رسمی پرواز.">
+<style>
+:root{--navy:#12337f;--blue:#285ff3;--blue2:#1d4ed8;--ink:#17213a;--muted:#667085;--bg:#f4f7fc;--line:#dfe7f5;--card:#fff;--green:#067647;--amber:#b54708;--soft:#f8faff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Tahoma,Arial,sans-serif}
+button,input,select{font:inherit}a{color:inherit;text-decoration:none}button{color:inherit}
+.shell{max-width:1280px;margin:auto;padding:18px}
+.hero{background:linear-gradient(135deg,#102d70,#285ff3);color:#fff;padding:36px;border-radius:30px;box-shadow:0 18px 45px #12337f29}
+.eyebrow{font-size:13px;opacity:.86;margin-bottom:8px}h1{font-size:clamp(29px,4vw,50px);margin:0 0 12px;line-height:1.35}.hero p{max-width:900px;line-height:2;margin:0;opacity:.94}
+.searchbox{display:grid;grid-template-columns:1fr 190px 170px;gap:10px;margin-top:25px;background:#fff;padding:10px;border-radius:18px}
+.searchbox input,.searchbox select{border:0;outline:0;padding:14px;background:transparent;color:var(--ink);min-width:0}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.stat{background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px}.stat b{display:block;font-size:24px;color:var(--navy)}.stat span{font-size:13px;color:var(--muted);line-height:1.8}
+.toolbar{display:flex;align-items-center;justify-content:space-between;gap:12px;margin:22px 0 14px}.toolbar h2{margin:0;font-size:25px}.result-count{color:var(--muted);font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.airport-card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 10px 30px #18274b0d;display:flex;flex-direction:column;min-height:330px;transition:.2s ease}
+.airport-card:hover{transform:translateY(-3px);border-color:#aac0ff;box-shadow:0 16px 34px #12337f17}
+.card-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.card-title{margin:0;font-size:18px;line-height:1.75}.type-badge{white-space:nowrap;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:bold;background:#eef3ff;color:var(--navy)}.type-badge.int{background:#ecfdf3;color:var(--green)}
+.en-name{direction:ltr;text-align:right;color:var(--muted);font-size:12px;min-height:19px;margin-top:3px}
+.location{color:var(--muted);font-size:13px;margin:10px 0 0}.summary{font-size:13px;line-height:1.9;color:#475467;margin:13px 0;flex:1}
+.codes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:5px}.codebox{background:#f7f9ff;border:1px solid var(--line);border-radius:13px;padding:10px}.codebox span{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}.codebox b{direction:ltr;display:block;color:var(--navy);font-size:15px}
+.card-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.btn{border:0;border-radius:12px;padding:11px 9px;cursor:pointer;text-align:center;font-size:13px;font-weight:bold}.primary{background:var(--blue);color:#fff}.secondary{background:#eef3ff;color:var(--navy)}.ghost{grid-column:1/-1;background:#f8fafc;border:1px solid var(--line)}
+.details{display:none;margin-top:13px;border-top:1px solid var(--line);padding-top:13px}.airport-card.open .details{display:block}.detail-row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:12px}.detail-row:last-child{border-bottom:0}.detail-row span{color:var(--muted)}.detail-row b{text-align:left}
+.empty{grid-column:1/-1;text-align:center;padding:50px 20px;background:#fff;border:1px solid var(--line);border-radius:20px;color:var(--muted)}
+.article{margin-top:26px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 10px 30px #18274b0d}.article h2{margin:32px 0 12px;color:var(--navy);font-size:26px}.article h2:first-child{margin-top:0}.article h3{margin:22px 0 8px;font-size:19px}.article p,.article li{line-height:2.05;color:#344054}.article ul{padding-right:22px}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.info-box{background:#f7f9ff;border:1px solid var(--line);border-radius:16px;padding:16px}.info-box strong{display:block;color:var(--navy);font-size:18px;margin-bottom:6px}
+.faq{border-top:1px solid var(--line);padding:15px 0}.faq:first-of-type{border-top:0}.faq h3{margin:0 0 6px}
+.notice{margin-top:18px;border:1px solid #fedf89;background:#fffaeb;color:#7a2e0e;border-radius:14px;padding:14px;font-size:13px;line-height:1.9}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}
+@media(max-width:1000px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){.shell{padding:9px}.hero{padding:24px 18px;border-radius:20px}.searchbox{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.info-grid{grid-template-columns:1fr}.toolbar{align-items:flex-start;flex-direction:column}}
+@media(max-width:430px){.stats{grid-template-columns:1fr}.card-actions{grid-template-columns:1fr}.ghost{grid-column:auto}}
+</style>
 </head>
 <body>
-  <main class="app">
-    <section class="hero"><h1>فرودگاه‌های ایران</h1><p>نام شهر، نام فرودگاه، کد یاتا یا ایکائو را جستجو کنید و موقعیت فرودگاه را روی نقشه ببینید. این نسخه آزمایشی پایه‌ای برای ابزار کامل فرودگاه‌های ایران و سپس فرودگاه‌های جهان است.</p></section>
-    <section class="layout">
-      <aside class="panel">
-        <label class="label" for="searchInput">جستجوی فرودگاه</label>
-        <input id="searchInput" class="search" type="search" placeholder="مثلاً تهران، IKA یا OIIE" autocomplete="off">
-        <div class="filters"><button class="filter-btn active" data-filter="all">همه</button><button class="filter-btn" data-filter="international">بین‌المللی</button><button class="filter-btn" data-filter="domestic">داخلی</button></div>
-        <div id="count" class="count"></div><div id="airportList" class="airport-list"></div>
-        <div class="note">این نسخه به هیچ سرویس نقشه خارجی وابسته نیست؛ بنابراین حتی در صورت فیلتر یا اختلال سرویس‌های نقشه، خود ابزار و پین‌ها نمایش داده می‌شوند.</div>
-      </aside>
-      <section class="map-card"><div id="mapWrap" class="map-wrap"><svg class="iran-map" viewBox="0 0 900 650" aria-label="نقشه شماتیک ایران"><path class="iran-shape" d="M178 126 L248 88 L340 80 L408 105 L492 88 L585 118 L665 176 L725 250 L760 330 L728 390 L736 468 L680 522 L590 544 L520 575 L430 560 L350 525 L272 518 L210 468 L180 405 L138 350 L150 280 L120 225 Z"/><path class="province-line" d="M250 95 L290 180 L240 255 L165 280"/><path class="province-line" d="M340 82 L365 180 L300 265 L315 390 L255 510"/><path class="province-line" d="M492 92 L470 190 L520 280 L472 390 L510 565"/><path class="province-line" d="M585 120 L565 220 L650 300 L605 420 L680 520"/><path class="province-line" d="M180 405 L300 390 L472 390 L605 420 L736 468"/><path class="province-line" d="M150 280 L300 265 L520 280 L650 300 L760 330"/></svg><div id="tooltip" class="tooltip"></div></div></section>
-    </section>
-    <div class="footer">نسخه آزمایشی ابزار فرودگاه‌های ایران — FlyYab</div>
-  </main>
+<main class="shell">
+<section class="hero">
+<div class="eyebrow">ابزارهای سفر FlyYab</div>
+<h1>مرجع کامل فرودگاه‌های ایران</h1>
+<p>در این صفحه می‌توانید میان ۵۹ فرودگاه ایران جستجو کنید، کد یاتا و ایکائو، شهر و استان، نوع فرودگاه، موقعیت روی نقشه و مسیر دسترسی به اطلاعات رسمی پرواز را ببینید؛ همه‌چیز در یک صفحه و بدون ساخت صفحه جدا برای هر فرودگاه.</p>
+<div class="searchbox">
+<input id="q" type="search" placeholder="مثلاً مهرآباد، مشهد، THR یا OIII" autocomplete="off">
+<select id="province"><option value="">همه استان‌ها</option></select>
+<select id="type"><option value="">همه انواع</option><option value="international">بین‌المللی</option><option value="domestic">داخلی</option></select>
+</div>
+</section>
+
+<section class="stats">
+<div class="stat"><b id="total">۵۹</b><span>فرودگاه در فهرست قابل جستجو</span></div>
+<div class="stat"><b id="internationalCount"></b><span>فرودگاه با کاربری بین‌المللی</span></div>
+<div class="stat"><b id="provinceCount"></b><span>استان تحت پوشش</span></div>
+<div class="stat"><b>۱ صفحه</b><span>تمام ابزار، کارت‌ها و مقاله در یک نشانی</span></div>
+</section>
+
+<section class="toolbar">
+<div><h2>فهرست فرودگاه‌ها</h2><div class="result-count" id="count"></div></div>
+</section>
+
+<section id="cards" class="cards">
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی آیت‌الله جمی"
+ data-en="Abadan International Airport"
+ data-city="آبادان"
+ data-province="خوزستان"
+ data-iata="ABD"
+ data-icao="OIAA"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی آیت‌الله جمی</h3>
+      <div class="en-name">Abadan International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">آبادان، استان خوزستان</div>
+  <p class="summary">فرودگاه آبادان در استان خوزستان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>ABD</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIAA</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/301/اطلاعات-پرواز-فرودگاه-آبادان" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+آیت‌الله+جمی+آبادان" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>آبادان</b></div>
+    <div class="detail-row"><span>استان</span><b>خوزستان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">ABD</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIAA</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه شهدای ابوموسی"
+ data-en=""
+ data-city="ابوموسی"
+ data-province="هرمزگان"
+ data-iata="AEU"
+ data-icao="OIBA"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه شهدای ابوموسی</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">ابوموسی، استان هرمزگان</div>
+  <p class="summary">فرودگاه ابوموسی در استان هرمزگان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>AEU</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIBA</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+شهدای+ابوموسی+ابوموسی" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>ابوموسی</b></div>
+    <div class="detail-row"><span>استان</span><b>هرمزگان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">AEU</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIBA</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه آغاجاری"
+ data-en=""
+ data-city="آغاجاری"
+ data-province="خوزستان"
+ data-iata="AKW"
+ data-icao="OIAG"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه آغاجاری</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">آغاجاری، استان خوزستان</div>
+  <p class="summary">فرودگاه آغاجاری در استان خوزستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>AKW</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIAG</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+آغاجاری+آغاجاری" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>آغاجاری</b></div>
+    <div class="detail-row"><span>استان</span><b>خوزستان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">AKW</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIAG</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی اهواز"
+ data-en="Ahvaz International Airport"
+ data-city="اهواز"
+ data-province="خوزستان"
+ data-iata="AWZ"
+ data-icao="OIAW"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی اهواز</h3>
+      <div class="en-name">Ahvaz International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">اهواز، استان خوزستان</div>
+  <p class="summary">فرودگاه اهواز در استان خوزستان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>AWZ</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIAW</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/401/اطلاعات-پرواز-فرودگاه-اهواز" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+اهواز+اهواز" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>اهواز</b></div>
+    <div class="detail-row"><span>استان</span><b>خوزستان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">AWZ</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIAW</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی اراک"
+ data-en=""
+ data-city="اراک"
+ data-province="مرکزی"
+ data-iata="AJK"
+ data-icao="OIHR"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی اراک</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">اراک، استان مرکزی</div>
+  <p class="summary">فرودگاه اراک در استان مرکزی و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>AJK</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIHR</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+اراک+اراک" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>اراک</b></div>
+    <div class="detail-row"><span>استان</span><b>مرکزی</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">AJK</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIHR</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه اردبیل"
+ data-en="Ardabil Airport"
+ data-city="اردبیل"
+ data-province="اردبیل"
+ data-iata="ADU"
+ data-icao="OITL"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه اردبیل</h3>
+      <div class="en-name">Ardabil Airport</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">اردبیل، استان اردبیل</div>
+  <p class="summary">فرودگاه اردبیل در استان اردبیل و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>ADU</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OITL</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/113/اطلاعات-پرواز-فرودگاه-اردبيل" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+اردبیل+اردبیل" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>اردبیل</b></div>
+    <div class="detail-row"><span>استان</span><b>اردبیل</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">ADU</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OITL</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی خلیج فارس"
+ data-en=""
+ data-city="عسلویه"
+ data-province="بوشهر"
+ data-iata="PGU"
+ data-icao="OIBP"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی خلیج فارس</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">عسلویه، استان بوشهر</div>
+  <p class="summary">فرودگاه عسلویه در استان بوشهر و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>PGU</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIBP</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+خلیج+فارس+عسلویه" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>عسلویه</b></div>
+    <div class="detail-row"><span>استان</span><b>بوشهر</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">PGU</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIBP</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بم"
+ data-en=""
+ data-city="بم"
+ data-province="کرمان"
+ data-iata="BXR"
+ data-icao="OIKM"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بم</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">بم، استان کرمان</div>
+  <p class="summary">فرودگاه بم در استان کرمان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>BXR</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIKM</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بم+بم" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>بم</b></div>
+    <div class="detail-row"><span>استان</span><b>کرمان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">BXR</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIKM</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی بندرعباس"
+ data-en="Bandar Abbas International Airport"
+ data-city="بندرعباس"
+ data-province="هرمزگان"
+ data-iata="BND"
+ data-icao="OIKB"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی بندرعباس</h3>
+      <div class="en-name">Bandar Abbas International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">بندرعباس، استان هرمزگان</div>
+  <p class="summary">فرودگاه بندرعباس در استان هرمزگان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>BND</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIKB</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/117/اطلاعات-پرواز-فرودگاه-بندرعباس" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+بندرعباس+بندرعباس" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>بندرعباس</b></div>
+    <div class="detail-row"><span>استان</span><b>هرمزگان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">BND</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIKB</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بندرلنگه"
+ data-en=""
+ data-city="بندرلنگه"
+ data-province="هرمزگان"
+ data-iata="BDH"
+ data-icao="OIBL"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بندرلنگه</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">بندرلنگه، استان هرمزگان</div>
+  <p class="summary">فرودگاه بندرلنگه در استان هرمزگان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>BDH</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIBL</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بندرلنگه+بندرلنگه" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>بندرلنگه</b></div>
+    <div class="detail-row"><span>استان</span><b>هرمزگان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">BDH</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIBL</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی بیرجند"
+ data-en=""
+ data-city="بیرجند"
+ data-province="خراسان جنوبی"
+ data-iata="XBJ"
+ data-icao="OIMB"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی بیرجند</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">بیرجند، استان خراسان جنوبی</div>
+  <p class="summary">فرودگاه بیرجند در استان خراسان جنوبی و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>XBJ</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIMB</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+بیرجند+بیرجند" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>بیرجند</b></div>
+    <div class="detail-row"><span>استان</span><b>خراسان جنوبی</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">XBJ</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIMB</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بجنورد"
+ data-en=""
+ data-city="بجنورد"
+ data-province="خراسان شمالی"
+ data-iata="BJB"
+ data-icao="OIMN"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بجنورد</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">بجنورد، استان خراسان شمالی</div>
+  <p class="summary">فرودگاه بجنورد در استان خراسان شمالی و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>BJB</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIMN</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بجنورد+بجنورد" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>بجنورد</b></div>
+    <div class="detail-row"><span>استان</span><b>خراسان شمالی</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">BJB</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIMN</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بوشهر"
+ data-en="Bushehr Airport"
+ data-city="بوشهر"
+ data-province="بوشهر"
+ data-iata="BUZ"
+ data-icao="OIBB"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بوشهر</h3>
+      <div class="en-name">Bushehr Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">بوشهر، استان بوشهر</div>
+  <p class="summary">فرودگاه بوشهر در استان بوشهر و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>BUZ</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIBB</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/104/اطلاعات-پرواز-فرودگاه-بوشهر" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بوشهر+بوشهر" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>بوشهر</b></div>
+    <div class="detail-row"><span>استان</span><b>بوشهر</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">BUZ</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIBB</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی کنارک"
+ data-en=""
+ data-city="چابهار"
+ data-province="سیستان و بلوچستان"
+ data-iata="ZBR"
+ data-icao="OIZC"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی کنارک</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">چابهار، استان سیستان و بلوچستان</div>
+  <p class="summary">فرودگاه چابهار در استان سیستان و بلوچستان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>ZBR</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIZC</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+کنارک+چابهار" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>چابهار</b></div>
+    <div class="detail-row"><span>استان</span><b>سیستان و بلوچستان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">ZBR</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIZC</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه دزفول"
+ data-en=""
+ data-city="دزفول"
+ data-province="خوزستان"
+ data-iata="DEF"
+ data-icao="OIAD"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه دزفول</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">دزفول، استان خوزستان</div>
+  <p class="summary">فرودگاه دزفول در استان خوزستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>DEF</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIAD</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+دزفول+دزفول" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>دزفول</b></div>
+    <div class="detail-row"><span>استان</span><b>خوزستان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">DEF</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIAD</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه گچساران"
+ data-en=""
+ data-city="گچساران"
+ data-province="کهگیلویه و بویراحمد"
+ data-iata="GCH"
+ data-icao="OIAH"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه گچساران</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">گچساران، استان کهگیلویه و بویراحمد</div>
+  <p class="summary">فرودگاه گچساران در استان کهگیلویه و بویراحمد و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>GCH</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIAH</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+گچساران+گچساران" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>گچساران</b></div>
+    <div class="detail-row"><span>استان</span><b>کهگیلویه و بویراحمد</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">GCH</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIAH</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه گرگان"
+ data-en="Gorgan Airport"
+ data-city="گرگان"
+ data-province="گلستان"
+ data-iata="GBT"
+ data-icao="OING"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه گرگان</h3>
+      <div class="en-name">Gorgan Airport</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">گرگان، استان گلستان</div>
+  <p class="summary">فرودگاه گرگان در استان گلستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>GBT</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OING</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/202/اطلاعات-پرواز-فرودگاه-گرگان" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+گرگان+گرگان" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>گرگان</b></div>
+    <div class="detail-row"><span>استان</span><b>گلستان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">GBT</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OING</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه همدان"
+ data-en=""
+ data-city="همدان"
+ data-province="همدان"
+ data-iata="HDM"
+ data-icao="OIHH"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه همدان</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">همدان، استان همدان</div>
+  <p class="summary">فرودگاه همدان در استان همدان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>HDM</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIHH</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+همدان+همدان" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>همدان</b></div>
+    <div class="detail-row"><span>استان</span><b>همدان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">HDM</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIHH</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه شهدای ایلام"
+ data-en="Ilam Airport"
+ data-city="ایلام"
+ data-province="ایلام"
+ data-iata="IIL"
+ data-icao="OICI"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه شهدای ایلام</h3>
+      <div class="en-name">Ilam Airport</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">ایلام، استان ایلام</div>
+  <p class="summary">فرودگاه ایلام در استان ایلام و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>IIL</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OICI</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/105/اطلاعات-پرواز-فرودگاه-ايلام" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+شهدای+ایلام+ایلام" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>ایلام</b></div>
+    <div class="detail-row"><span>استان</span><b>ایلام</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">IIL</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OICI</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی امام خمینی"
+ data-en=""
+ data-city="تهران"
+ data-province="تهران"
+ data-iata="IKA"
+ data-icao="OIIE"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی امام خمینی</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">تهران، استان تهران</div>
+  <p class="summary">فرودگاه تهران در استان تهران و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>IKA</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIIE</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+امام+خمینی+تهران" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>تهران</b></div>
+    <div class="detail-row"><span>استان</span><b>تهران</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">IKA</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIIE</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه مهرآباد"
+ data-en="Mehrabad International Airport"
+ data-city="تهران"
+ data-province="تهران"
+ data-iata="THR"
+ data-icao="OIII"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه مهرآباد</h3>
+      <div class="en-name">Mehrabad International Airport</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">تهران، استان تهران</div>
+  <p class="summary">فرودگاه تهران در استان تهران و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>THR</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIII</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/2/اطلاعات-پرواز-فرودگاه-مهرآباد" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+مهرآباد+تهران" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>تهران</b></div>
+    <div class="detail-row"><span>استان</span><b>تهران</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">THR</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIII</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی شهید بهشتی"
+ data-en="Isfahan Shahid Beheshti International Airport"
+ data-city="اصفهان"
+ data-province="اصفهان"
+ data-iata="IFN"
+ data-icao="OIFM"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی شهید بهشتی</h3>
+      <div class="en-name">Isfahan Shahid Beheshti International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">اصفهان، استان اصفهان</div>
+  <p class="summary">فرودگاه اصفهان در استان اصفهان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>IFN</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIFM</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/114/اطلاعات-پرواز-فرودگاه-اصفهان" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+شهید+بهشتی+اصفهان" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>اصفهان</b></div>
+    <div class="detail-row"><span>استان</span><b>اصفهان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">IFN</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIFM</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی جزیره هندورابی"
+ data-en=""
+ data-city="هندورابی"
+ data-province="هرمزگان"
+ data-iata=""
+ data-icao="OIBJ"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی جزیره هندورابی</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">هندورابی، استان هرمزگان</div>
+  <p class="summary">فرودگاه هندورابی در استان هرمزگان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>—</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIBJ</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+جزیره+هندورابی+هندورابی" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>هندورابی</b></div>
+    <div class="detail-row"><span>استان</span><b>هرمزگان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">ثبت نشده</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIBJ</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه جیرفت"
+ data-en=""
+ data-city="جیرفت"
+ data-province="کرمان"
+ data-iata="JYR"
+ data-icao="OIKJ"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه جیرفت</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">جیرفت، استان کرمان</div>
+  <p class="summary">فرودگاه جیرفت در استان کرمان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>JYR</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIKJ</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+جیرفت+جیرفت" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>جیرفت</b></div>
+    <div class="detail-row"><span>استان</span><b>کرمان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">JYR</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIKJ</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه کرمانشاه"
+ data-en="Kermanshah International Airport"
+ data-city="کرمانشاه"
+ data-province="کرمانشاه"
+ data-iata="KSH"
+ data-icao="OICC"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه کرمانشاه</h3>
+      <div class="en-name">Kermanshah International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">کرمانشاه، استان کرمانشاه</div>
+  <p class="summary">فرودگاه کرمانشاه در استان کرمانشاه و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>KSH</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OICC</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/111/اطلاعات-پرواز-فرودگاه-کرمانشاه" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+کرمانشاه+کرمانشاه" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>کرمانشاه</b></div>
+    <div class="detail-row"><span>استان</span><b>کرمانشاه</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">KSH</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OICC</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی آیت‌الله هاشمی رفسنجانی"
+ data-en="Kerman International Airport"
+ data-city="کرمان"
+ data-province="کرمان"
+ data-iata="KER"
+ data-icao="OIKK"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی آیت‌الله هاشمی رفسنجانی</h3>
+      <div class="en-name">Kerman International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">کرمان، استان کرمان</div>
+  <p class="summary">فرودگاه کرمان در استان کرمان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>KER</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIKK</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/201/اطلاعات-پرواز-فرودگاه-کرمان" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+آیت‌الله+هاشمی+رفسنجانی+کرمان" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>کرمان</b></div>
+    <div class="detail-row"><span>استان</span><b>کرمان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">KER</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIKK</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه خارک"
+ data-en=""
+ data-city="جزیره خارک"
+ data-province="بوشهر"
+ data-iata="KHK"
+ data-icao="OIBQ"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه خارک</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">جزیره خارک، استان بوشهر</div>
+  <p class="summary">فرودگاه جزیره خارک در استان بوشهر و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>KHK</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIBQ</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+خارک+جزیره+خارک" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>جزیره خارک</b></div>
+    <div class="detail-row"><span>استان</span><b>بوشهر</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">KHK</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIBQ</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه خرم‌آباد"
+ data-en=""
+ data-city="خرم‌آباد"
+ data-province="لرستان"
+ data-iata="KHD"
+ data-icao="OICK"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه خرم‌آباد</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">خرم‌آباد، استان لرستان</div>
+  <p class="summary">فرودگاه خرم‌آباد در استان لرستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>KHD</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OICK</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+خرم‌آباد+خرم‌آباد" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>خرم‌آباد</b></div>
+    <div class="detail-row"><span>استان</span><b>لرستان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">KHD</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OICK</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه خوی"
+ data-en=""
+ data-city="خوی"
+ data-province="آذربایجان غربی"
+ data-iata="KHY"
+ data-icao="OITK"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه خوی</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">خوی، استان آذربایجان غربی</div>
+  <p class="summary">فرودگاه خوی در استان آذربایجان غربی و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>KHY</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OITK</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+خوی+خوی" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>خوی</b></div>
+    <div class="detail-row"><span>استان</span><b>آذربایجان غربی</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">KHY</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OITK</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی کیش"
+ data-en=""
+ data-city="کیش"
+ data-province="هرمزگان"
+ data-iata="KIH"
+ data-icao="OIBK"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی کیش</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">کیش، استان هرمزگان</div>
+  <p class="summary">فرودگاه کیش در استان هرمزگان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>KIH</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIBK</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+کیش+کیش" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>کیش</b></div>
+    <div class="detail-row"><span>استان</span><b>هرمزگان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">KIH</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIBK</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی لارستان"
+ data-en=""
+ data-city="لار"
+ data-province="فارس"
+ data-iata="LRR"
+ data-icao="OISL"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی لارستان</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">لار، استان فارس</div>
+  <p class="summary">فرودگاه لار در استان فارس و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>LRR</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OISL</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+لارستان+لار" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>لار</b></div>
+    <div class="detail-row"><span>استان</span><b>فارس</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">LRR</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OISL</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی لامرد"
+ data-en=""
+ data-city="لامرد"
+ data-province="فارس"
+ data-iata="LFM"
+ data-icao="OISR"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی لامرد</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">لامرد، استان فارس</div>
+  <p class="summary">فرودگاه لامرد در استان فارس و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>LFM</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OISR</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+لامرد+لامرد" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>لامرد</b></div>
+    <div class="detail-row"><span>استان</span><b>فارس</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">LFM</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OISR</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی شهید هاشمی‌نژاد"
+ data-en="Mashhad Shahid Hasheminejad International Airport"
+ data-city="مشهد"
+ data-province="خراسان رضوی"
+ data-iata="MHD"
+ data-icao="OIMM"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی شهید هاشمی‌نژاد</h3>
+      <div class="en-name">Mashhad Shahid Hasheminejad International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">مشهد، استان خراسان رضوی</div>
+  <p class="summary">فرودگاه مشهد در استان خراسان رضوی و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>MHD</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIMM</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/102/اطلاعات-پرواز-فرودگاه-مشهد" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+شهید+هاشمی‌نژاد+مشهد" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>مشهد</b></div>
+    <div class="detail-row"><span>استان</span><b>خراسان رضوی</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">MHD</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIMM</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه ماهشهر"
+ data-en=""
+ data-city="ماهشهر"
+ data-province="خوزستان"
+ data-iata="MRX"
+ data-icao="OIAM"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه ماهشهر</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">ماهشهر، استان خوزستان</div>
+  <p class="summary">فرودگاه ماهشهر در استان خوزستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>MRX</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIAM</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+ماهشهر+ماهشهر" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>ماهشهر</b></div>
+    <div class="detail-row"><span>استان</span><b>خوزستان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">MRX</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIAM</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه نوشهر"
+ data-en=""
+ data-city="نوشهر"
+ data-province="مازندران"
+ data-iata="NSH"
+ data-icao="OINN"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه نوشهر</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">نوشهر، استان مازندران</div>
+  <p class="summary">فرودگاه نوشهر در استان مازندران و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>NSH</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OINN</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+نوشهر+نوشهر" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>نوشهر</b></div>
+    <div class="detail-row"><span>استان</span><b>مازندران</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">NSH</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OINN</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی ارومیه"
+ data-en="Urmia International Airport"
+ data-city="ارومیه"
+ data-province="آذربایجان غربی"
+ data-iata="OMH"
+ data-icao="OITR"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی ارومیه</h3>
+      <div class="en-name">Urmia International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">ارومیه، استان آذربایجان غربی</div>
+  <p class="summary">فرودگاه ارومیه در استان آذربایجان غربی و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>OMH</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OITR</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/110/اطلاعات-پرواز-فرودگاه-اروميه" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+ارومیه+ارومیه" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>ارومیه</b></div>
+    <div class="detail-row"><span>استان</span><b>آذربایجان غربی</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">OMH</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OITR</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه پارس‌آباد مغان"
+ data-en=""
+ data-city="پارس‌آباد"
+ data-province="اردبیل"
+ data-iata="PFQ"
+ data-icao="OITP"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه پارس‌آباد مغان</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">پارس‌آباد، استان اردبیل</div>
+  <p class="summary">فرودگاه پارس‌آباد در استان اردبیل و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>PFQ</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OITP</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+پارس‌آباد+مغان+پارس‌آباد" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>پارس‌آباد</b></div>
+    <div class="detail-row"><span>استان</span><b>اردبیل</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">PFQ</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OITP</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی قشم"
+ data-en=""
+ data-city="قشم"
+ data-province="هرمزگان"
+ data-iata="GSM"
+ data-icao="OIKQ"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی قشم</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">قشم، استان هرمزگان</div>
+  <p class="summary">فرودگاه قشم در استان هرمزگان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>GSM</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIKQ</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+قشم+قشم" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>قشم</b></div>
+    <div class="detail-row"><span>استان</span><b>هرمزگان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">GSM</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIKQ</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی سردار جنگل"
+ data-en="Rasht Sardar-e Jangal International Airport"
+ data-city="رشت"
+ data-province="گیلان"
+ data-iata="RAS"
+ data-icao="OIGG"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی سردار جنگل</h3>
+      <div class="en-name">Rasht Sardar-e Jangal International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">رشت، استان گیلان</div>
+  <p class="summary">فرودگاه رشت در استان گیلان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>RAS</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIGG</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/203/اطلاعات-پرواز-فرودگاه-رشت" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+سردار+جنگل+رشت" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>رشت</b></div>
+    <div class="detail-row"><span>استان</span><b>گیلان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">RAS</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIGG</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه رفسنجان"
+ data-en=""
+ data-city="رفسنجان"
+ data-province="کرمان"
+ data-iata="RJN"
+ data-icao="OIKR"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه رفسنجان</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">رفسنجان، استان کرمان</div>
+  <p class="summary">فرودگاه رفسنجان در استان کرمان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>RJN</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIKR</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+رفسنجان+رفسنجان" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>رفسنجان</b></div>
+    <div class="detail-row"><span>استان</span><b>کرمان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">RJN</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIKR</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه سنندج"
+ data-en=""
+ data-city="سنندج"
+ data-province="کردستان"
+ data-iata="SDG"
+ data-icao="OICS"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه سنندج</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">سنندج، استان کردستان</div>
+  <p class="summary">فرودگاه سنندج در استان کردستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>SDG</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OICS</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+سنندج+سنندج" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>سنندج</b></div>
+    <div class="detail-row"><span>استان</span><b>کردستان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">SDG</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OICS</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی شهدای شهرکرد"
+ data-en=""
+ data-city="شهرکرد"
+ data-province="چهارمحال و بختیاری"
+ data-iata="CQD"
+ data-icao="OIFS"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی شهدای شهرکرد</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">شهرکرد، استان چهارمحال و بختیاری</div>
+  <p class="summary">فرودگاه شهرکرد در استان چهارمحال و بختیاری و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>CQD</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIFS</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+شهدای+شهرکرد+شهرکرد" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>شهرکرد</b></div>
+    <div class="detail-row"><span>استان</span><b>چهارمحال و بختیاری</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">CQD</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIFS</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه دشت ناز"
+ data-en="Sari Dasht-e Naz Airport"
+ data-city="ساری"
+ data-province="مازندران"
+ data-iata="SRY"
+ data-icao="OINZ"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه دشت ناز</h3>
+      <div class="en-name">Sari Dasht-e Naz Airport</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">ساری، استان مازندران</div>
+  <p class="summary">فرودگاه ساری در استان مازندران و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>SRY</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OINZ</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/106/اطلاعات-پرواز-فرودگاه-ساري" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+دشت+ناز+ساری" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>ساری</b></div>
+    <div class="detail-row"><span>استان</span><b>مازندران</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">SRY</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OINZ</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی شهید دستغیب"
+ data-en="Shiraz Shahid Dastgheib International Airport"
+ data-city="شیراز"
+ data-province="فارس"
+ data-iata="SYZ"
+ data-icao="OISS"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی شهید دستغیب</h3>
+      <div class="en-name">Shiraz Shahid Dastgheib International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">شیراز، استان فارس</div>
+  <p class="summary">فرودگاه شیراز در استان فارس و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>SYZ</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OISS</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/1/اطلاعات-پرواز-فرودگاه-شيراز" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+شهید+دستغیب+شیراز" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>شیراز</b></div>
+    <div class="detail-row"><span>استان</span><b>فارس</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">SYZ</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OISS</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه سیرجان"
+ data-en=""
+ data-city="سیرجان"
+ data-province="کرمان"
+ data-iata="SYJ"
+ data-icao="OIKY"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه سیرجان</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">سیرجان، استان کرمان</div>
+  <p class="summary">فرودگاه سیرجان در استان کرمان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>SYJ</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIKY</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+سیرجان+سیرجان" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>سیرجان</b></div>
+    <div class="detail-row"><span>استان</span><b>کرمان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">SYJ</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIKY</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه جزیره سیری"
+ data-en=""
+ data-city="جزیره سیری"
+ data-province="هرمزگان"
+ data-iata="SXI"
+ data-icao="OIBS"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه جزیره سیری</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">جزیره سیری، استان هرمزگان</div>
+  <p class="summary">فرودگاه جزیره سیری در استان هرمزگان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>SXI</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIBS</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+جزیره+سیری+جزیره+سیری" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>جزیره سیری</b></div>
+    <div class="detail-row"><span>استان</span><b>هرمزگان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">SXI</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIBS</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه طبس"
+ data-en=""
+ data-city="طبس"
+ data-province="خراسان جنوبی"
+ data-iata="TCX"
+ data-icao="OIMT"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه طبس</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">طبس، استان خراسان جنوبی</div>
+  <p class="summary">فرودگاه طبس در استان خراسان جنوبی و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>TCX</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIMT</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+طبس+طبس" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>طبس</b></div>
+    <div class="detail-row"><span>استان</span><b>خراسان جنوبی</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">TCX</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIMT</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی شهید مدنی"
+ data-en="Tabriz Shahid Madani International Airport"
+ data-city="تبریز"
+ data-province="آذربایجان شرقی"
+ data-iata="TBZ"
+ data-icao="OITT"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی شهید مدنی</h3>
+      <div class="en-name">Tabriz Shahid Madani International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">تبریز، استان آذربایجان شرقی</div>
+  <p class="summary">فرودگاه تبریز در استان آذربایجان شرقی و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>TBZ</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OITT</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/103/اطلاعات-پرواز-فرودگاه-تبريز" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+شهید+مدنی+تبریز" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>تبریز</b></div>
+    <div class="detail-row"><span>استان</span><b>آذربایجان شرقی</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">TBZ</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OITT</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه امیدیه"
+ data-en=""
+ data-city="امیدیه"
+ data-province="خوزستان"
+ data-iata="OMI"
+ data-icao="OIAJ"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه امیدیه</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">امیدیه، استان خوزستان</div>
+  <p class="summary">فرودگاه امیدیه در استان خوزستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>OMI</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIAJ</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+امیدیه+امیدیه" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>امیدیه</b></div>
+    <div class="detail-row"><span>استان</span><b>خوزستان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">OMI</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIAJ</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه یاسوج"
+ data-en=""
+ data-city="یاسوج"
+ data-province="کهگیلویه و بویراحمد"
+ data-iata="YES"
+ data-icao="OISY"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه یاسوج</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">یاسوج، استان کهگیلویه و بویراحمد</div>
+  <p class="summary">فرودگاه یاسوج در استان کهگیلویه و بویراحمد و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>YES</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OISY</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+یاسوج+یاسوج" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>یاسوج</b></div>
+    <div class="detail-row"><span>استان</span><b>کهگیلویه و بویراحمد</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">YES</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OISY</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی شهید صدوقی"
+ data-en="Yazd Shahid Sadooghi International Airport"
+ data-city="یزد"
+ data-province="یزد"
+ data-iata="AZD"
+ data-icao="OIYY"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی شهید صدوقی</h3>
+      <div class="en-name">Yazd Shahid Sadooghi International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">یزد، استان یزد</div>
+  <p class="summary">فرودگاه یزد در استان یزد و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>AZD</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIYY</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/107/اطلاعات-پرواز-فرودگاه-يزد" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+شهید+صدوقی+یزد" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>یزد</b></div>
+    <div class="detail-row"><span>استان</span><b>یزد</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">AZD</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIYY</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه زابل"
+ data-en=""
+ data-city="زابل"
+ data-province="سیستان و بلوچستان"
+ data-iata="ACZ"
+ data-icao="OIZB"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه زابل</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">زابل، استان سیستان و بلوچستان</div>
+  <p class="summary">فرودگاه زابل در استان سیستان و بلوچستان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>ACZ</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIZB</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+زابل+زابل" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>زابل</b></div>
+    <div class="detail-row"><span>استان</span><b>سیستان و بلوچستان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">ACZ</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIZB</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه بین‌المللی زاهدان"
+ data-en="Zahedan International Airport"
+ data-city="زاهدان"
+ data-province="سیستان و بلوچستان"
+ data-iata="ZAH"
+ data-icao="OIZH"
+ data-type="international">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه بین‌المللی زاهدان</h3>
+      <div class="en-name">Zahedan International Airport</div>
+    </div>
+    <span class="type-badge int">بین‌المللی</span>
+  </div>
+  <div class="location">زاهدان، استان سیستان و بلوچستان</div>
+  <p class="summary">فرودگاه زاهدان در استان سیستان و بلوچستان و از فرودگاه‌های دارای کاربری بین‌المللی در شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>ZAH</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIZH</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/109/اطلاعات-پرواز-فرودگاه-زاهدان" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+بین‌المللی+زاهدان+زاهدان" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>زاهدان</b></div>
+    <div class="detail-row"><span>استان</span><b>سیستان و بلوچستان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>بین‌المللی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">ZAH</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIZH</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه زنجان"
+ data-en=""
+ data-city="زنجان"
+ data-province="زنجان"
+ data-iata="JWN"
+ data-icao="OITZ"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه زنجان</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">زنجان، استان زنجان</div>
+  <p class="summary">فرودگاه زنجان در استان زنجان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>JWN</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OITZ</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+زنجان+زنجان" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>زنجان</b></div>
+    <div class="detail-row"><span>استان</span><b>زنجان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">JWN</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OITZ</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه سهند"
+ data-en=""
+ data-city="مراغه"
+ data-province="آذربایجان شرقی"
+ data-iata="ACP"
+ data-icao="OITM"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه سهند</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">مراغه، استان آذربایجان شرقی</div>
+  <p class="summary">فرودگاه مراغه در استان آذربایجان شرقی و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>ACP</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OITM</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+سهند+مراغه" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>مراغه</b></div>
+    <div class="detail-row"><span>استان</span><b>آذربایجان شرقی</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">ACP</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OITM</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه رامسر"
+ data-en=""
+ data-city="رامسر"
+ data-province="مازندران"
+ data-iata="RZR"
+ data-icao="OINR"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه رامسر</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">رامسر، استان مازندران</div>
+  <p class="summary">فرودگاه رامسر در استان مازندران و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>RZR</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OINR</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+رامسر+رامسر" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>رامسر</b></div>
+    <div class="detail-row"><span>استان</span><b>مازندران</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">RZR</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OINR</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه شاهرود"
+ data-en=""
+ data-city="شاهرود"
+ data-province="سمنان"
+ data-iata="RUD"
+ data-icao="OIMJ"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه شاهرود</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">شاهرود، استان سمنان</div>
+  <p class="summary">فرودگاه شاهرود در استان سمنان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>RUD</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIMJ</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+شاهرود+شاهرود" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>شاهرود</b></div>
+    <div class="detail-row"><span>استان</span><b>سمنان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">RUD</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIMJ</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه سبزوار"
+ data-en=""
+ data-city="سبزوار"
+ data-province="خراسان رضوی"
+ data-iata="AFZ"
+ data-icao="OIMS"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه سبزوار</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">سبزوار، استان خراسان رضوی</div>
+  <p class="summary">فرودگاه سبزوار در استان خراسان رضوی و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>AFZ</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIMS</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+سبزوار+سبزوار" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>سبزوار</b></div>
+    <div class="detail-row"><span>استان</span><b>خراسان رضوی</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">AFZ</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIMS</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+
+<article class="airport-card"
+ data-name="فرودگاه کاشان"
+ data-en=""
+ data-city="کاشان"
+ data-province="اصفهان"
+ data-iata="KKS"
+ data-icao="OIFK"
+ data-type="domestic">
+  <div class="card-top">
+    <div>
+      <h3 class="card-title">فرودگاه کاشان</h3>
+      <div class="en-name">&nbsp;</div>
+    </div>
+    <span class="type-badge ">داخلی</span>
+  </div>
+  <div class="location">کاشان، استان اصفهان</div>
+  <p class="summary">فرودگاه کاشان در استان اصفهان و یکی از فرودگاه‌های داخلی و منطقه‌ای شبکه هوایی ایران است.</p>
+  <div class="codes">
+    <div class="codebox"><span>کد یاتا</span><b>KKS</b></div>
+    <div class="codebox"><span>کد ایکائو</span><b>OIFK</b></div>
+  </div>
+  <div class="card-actions">
+    <a class="btn primary" href="https://fids.airport.ir/" target="_blank" rel="noopener">اطلاعات رسمی پرواز</a>
+    <a class="btn secondary" href="https://www.google.com/maps/search/?api=1&amp;query=فرودگاه+کاشان+کاشان" target="_blank" rel="noopener">موقعیت روی نقشه</a>
+    <button class="btn ghost toggle" type="button">جزئیات بیشتر</button>
+  </div>
+  <div class="details">
+    <div class="detail-row"><span>نام شهر</span><b>کاشان</b></div>
+    <div class="detail-row"><span>استان</span><b>اصفهان</b></div>
+    <div class="detail-row"><span>نوع فرودگاه</span><b>داخلی</b></div>
+    <div class="detail-row"><span>کد IATA</span><b dir="ltr">KKS</b></div>
+    <div class="detail-row"><span>کد ICAO</span><b dir="ltr">OIFK</b></div>
+    <div class="detail-row"><span>مرجع وضعیت پرواز</span><b>سامانه رسمی اطلاعات پرواز</b></div>
+  </div>
+</article>
+</section>
+
+<article class="article">
+<h2>راهنمای کامل فرودگاه‌های ایران</h2>
+<p>شبکه فرودگاهی ایران مجموعه‌ای از فرودگاه‌های بین‌المللی، داخلی، منطقه‌ای و جزیره‌ای را در بر می‌گیرد. این شبکه شهرهای بزرگ، مراکز استان‌ها، مناطق مرزی و جزایر جنوبی را به مسیرهای هوایی کشور متصل می‌کند. ابزار فرودگاه‌های ایران در FlyYab برای این طراحی شده که کاربر بتواند بدون جابه‌جایی میان چند صفحه، مشخصات اصلی هر فرودگاه را سریع پیدا کند.</p>
+
+<div class="info-grid">
+<div class="info-box"><strong>جستجوی چندگانه</strong><span>نام فرودگاه، شهر، استان، IATA و ICAO</span></div>
+<div class="info-box"><strong>کارت اطلاعاتی</strong><span>مشخصات اصلی و جزئیات بازشونده در همان صفحه</span></div>
+<div class="info-box"><strong>دسترسی سریع</strong><span>نقشه و سامانه رسمی اطلاعات پرواز</span></div>
+</div>
+
+<h2>کد یاتا و کد ایکائو چه تفاوتی دارند؟</h2>
+<p><strong>کد یاتا یا IATA</strong> معمولاً سه حرف دارد و بیشتر مسافران آن را روی بلیت، کارت پرواز و برچسب بار مشاهده می‌کنند؛ مانند <b dir="ltr">IKA</b> برای فرودگاه امام خمینی و <b dir="ltr">MHD</b> برای فرودگاه مشهد. <strong>کد ایکائو یا ICAO</strong> چهار حرف دارد و بیشتر در عملیات پروازی، برنامه پرواز و سامانه‌های تخصصی هوانوردی استفاده می‌شود؛ مانند <b dir="ltr">OIIE</b> و <b dir="ltr">OIMM</b>.</p>
+
+<h2>مهم‌ترین فرودگاه‌های تهران</h2>
+<h3>فرودگاه بین‌المللی امام خمینی</h3>
+<p>فرودگاه امام خمینی با کد یاتا <b dir="ltr">IKA</b> اصلی‌ترین فرودگاه تهران برای بخش بزرگی از پروازهای بین‌المللی است. مسافر باید هنگام خرید بلیت به نام و کد فرودگاه توجه کند، زیرا فاصله آن با مهرآباد قابل توجه است.</p>
+<h3>فرودگاه مهرآباد</h3>
+<p>فرودگاه مهرآباد با کد یاتا <b dir="ltr">THR</b> مهم‌ترین پایانه پروازهای داخلی تهران است. بررسی شماره ترمینال و شرکت هواپیمایی پیش از حرکت اهمیت زیادی دارد.</p>
+
+<h2>فرودگاه‌های مهم منطقه‌ای و بین‌المللی</h2>
+<p>فرودگاه‌های مشهد، شیراز، تبریز، اصفهان، اهواز، بندرعباس، کرمان، رشت و زاهدان از مهم‌ترین مراکز اتصال هوایی استان‌های مختلف ایران هستند. فرودگاه‌های کیش، قشم، بندرلنگه، ابوموسی، سیری و هندورابی نیز برای دسترسی هوایی به جزایر و مناطق جنوبی اهمیت دارند.</p>
+
+<h2>چطور از ابزار فرودگاه‌های ایران استفاده کنیم؟</h2>
+<ul>
+<li>نام شهر، استان، فرودگاه یا کد یاتا و ایکائو را در کادر جستجو وارد کنید.</li>
+<li>با فیلتر استان یا نوع فرودگاه، تعداد نتایج را محدود کنید.</li>
+<li>در هر کارت، اطلاعات اصلی و کدهای فرودگاه نمایش داده می‌شود.</li>
+<li>با انتخاب «جزئیات بیشتر»، اطلاعات تکمیلی همان کارت در همان صفحه باز می‌شود.</li>
+<li>برای مسیریابی، دکمه نقشه و برای وضعیت پرواز، دکمه اطلاعات رسمی پرواز را انتخاب کنید.</li>
+</ul>
+
+<h2>نکات مهم پیش از رفتن به فرودگاه</h2>
+<ul>
+<li>نام و کد فرودگاه را با اطلاعات درج‌شده روی بلیت تطبیق دهید.</li>
+<li>شماره ترمینال، زمان پذیرش مسافر و میزان بار مجاز را بررسی کنید.</li>
+<li>برای پروازهای خارجی، گذرنامه، ویزا و مقررات مقصد را پیش از حرکت کنترل کنید.</li>
+<li>آخرین وضعیت پرواز را از شرکت هواپیمایی یا مرجع رسمی اطلاعات پرواز دریافت کنید.</li>
+<li>برای مسیریابی خیابانی، از نقشه به‌روز استفاده کنید؛ موقعیت‌های تقریبی برای تصمیم نهایی کافی نیستند.</li>
+</ul>
+
+<h2>پرسش‌های متداول</h2>
+<div class="faq"><h3>فرودگاه اصلی پروازهای خارجی تهران کدام است؟</h3><p>بخش عمده پروازهای خارجی تهران از فرودگاه بین‌المللی امام خمینی انجام می‌شود؛ بااین‌حال اطلاعات روی بلیت ملاک نهایی است.</p></div>
+<div class="faq"><h3>پروازهای داخلی تهران معمولاً از کدام فرودگاه انجام می‌شوند؟</h3><p>بخش اصلی پروازهای داخلی تهران از فرودگاه مهرآباد انجام می‌شود.</p></div>
+<div class="faq"><h3>چرا بعضی فرودگاه‌ها کد یاتا ندارند؟</h3><p>همه فرودگاه‌ها الزاماً کد سه‌حرفی یاتا ندارند. بعضی فرودگاه‌های کوچک یا محدود ممکن است فقط کد ایکائو داشته باشند.</p></div>
+<div class="faq"><h3>آیا عنوان بین‌المللی به معنی وجود دائمی پرواز خارجی است؟</h3><p>خیر. عنوان بین‌المللی به مجوزها و زیرساخت فرودگاه مربوط است و برنامه پروازهای خارجی ممکن است تغییر کند.</p></div>
+
+<div class="notice">نام‌ها، کدها و دسته‌بندی‌های این صفحه برای راهنمای عمومی ارائه شده‌اند. وضعیت عملیاتی، برنامه پروازها و مسیرهای فعال ممکن است تغییر کند؛ برای تصمیم نهایی، بلیت، شرکت هواپیمایی و اطلاعیه‌های رسمی را ملاک قرار دهید.</div>
+</article>
+
+<footer>مرجع فرودگاه‌های ایران — FlyYab</footer>
+</main>
+
 <script>
-const airports=[
-{id:"ika",name:"فرودگاه بین‌المللی امام خمینی",city:"تهران",iata:"IKA",icao:"OIIE",type:"international",x:46,y:38},
-{id:"thr",name:"فرودگاه مهرآباد",city:"تهران",iata:"THR",icao:"OIII",type:"domestic",x:43,y:34},
-{id:"mhd",name:"فرودگاه بین‌المللی شهید هاشمی‌نژاد",city:"مشهد",iata:"MHD",icao:"OIMM",type:"international",x:76,y:23},
-{id:"syz",name:"فرودگاه بین‌المللی شهید دستغیب",city:"شیراز",iata:"SYZ",icao:"OISS",type:"international",x:45,y:72},
-{id:"tbz",name:"فرودگاه بین‌المللی شهید مدنی",city:"تبریز",iata:"TBZ",icao:"OITT",type:"international",x:23,y:22},
-{id:"kih",name:"فرودگاه بین‌المللی کیش",city:"کیش",iata:"KIH",icao:"OIBK",type:"international",x:44,y:88},
-{id:"ifn",name:"فرودگاه بین‌المللی شهید بهشتی",city:"اصفهان",iata:"IFN",icao:"OIFM",type:"international",x:49,y:53},
-{id:"awz",name:"فرودگاه بین‌المللی اهواز",city:"اهواز",iata:"AWZ",icao:"OIAW",type:"international",x:27,y:60}
-];
-const state={query:"",filter:"all",selected:null},searchInput=document.getElementById("searchInput"),airportList=document.getElementById("airportList"),count=document.getElementById("count"),mapWrap=document.getElementById("mapWrap"),tooltip=document.getElementById("tooltip");
-const normalize=v=>String(v||"").trim().toLowerCase();
-function matches(a){const q=normalize(state.query);return(state.filter==="all"||a.type===state.filter)&&(!q||[a.name,a.city,a.iata,a.icao].some(v=>normalize(v).includes(q)))}
-function filtered(){return airports.filter(matches)}
-function createPins(){mapWrap.querySelectorAll(".pin").forEach(el=>el.remove());airports.forEach(a=>{const pin=document.createElement("button");pin.className="pin";pin.type="button";pin.dataset.id=a.id;pin.style.left=a.x+"%";pin.style.top=a.y+"%";pin.title=a.name;pin.setAttribute("aria-label",a.name);pin.addEventListener("click",()=>selectAirport(a.id,true));mapWrap.appendChild(pin)})}
-function renderList(){const items=filtered();count.textContent=items.length+" فرودگاه نمایش داده می‌شود";airportList.innerHTML="";if(!items.length){airportList.innerHTML='<div class="empty">فرودگاهی با این عبارت پیدا نشد.</div>';updatePinVisibility([]);hideTooltip();return}items.forEach(a=>{const el=document.createElement("div");el.className="airport-item"+(state.selected===a.id?" active":"");el.innerHTML=`<div class="airport-name">${a.name}</div><div class="airport-meta">${a.city} · ${a.type==="international"?"بین‌المللی":"داخلی"}</div><div class="airport-codes"><span class="code">${a.iata}</span><span class="code">${a.icao}</span></div>`;el.addEventListener("click",()=>selectAirport(a.id,true));airportList.appendChild(el)});updatePinVisibility(items.map(a=>a.id))}
-function updatePinVisibility(ids){mapWrap.querySelectorAll(".pin").forEach(pin=>{pin.style.display=ids.includes(pin.dataset.id)?"block":"none";pin.classList.toggle("active",pin.dataset.id===state.selected)})}
-function selectAirport(id,show){const a=airports.find(x=>x.id===id);if(!a)return;state.selected=id;renderList();if(show)showTooltip(a)}
-function showTooltip(a){tooltip.innerHTML=`<h3>${a.name}</h3><p>شهر: ${a.city}</p><p>کد یاتا: <b dir="ltr">${a.iata}</b></p><p>کد ایکائو: <b dir="ltr">${a.icao}</b></p><span class="badge">${a.type==="international"?"فرودگاه بین‌المللی":"فرودگاه داخلی"}</span>`;tooltip.style.left=Math.min(a.x,72)+"%";tooltip.style.top=Math.max(a.y-18,4)+"%";tooltip.classList.add("show")}
-function hideTooltip(){tooltip.classList.remove("show")}
-searchInput.addEventListener("input",e=>{state.query=e.target.value;state.selected=null;renderList()});document.querySelectorAll(".filter-btn").forEach(btn=>btn.addEventListener("click",()=>{document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));btn.classList.add("active");state.filter=btn.dataset.filter;state.selected=null;renderList()}));mapWrap.addEventListener("click",e=>{if(e.target===mapWrap||e.target.tagName==="svg"||e.target.tagName==="path")hideTooltip()});createPins();renderList();
+const q=document.getElementById('q');
+const province=document.getElementById('province');
+const type=document.getElementById('type');
+const count=document.getElementById('count');
+const cards=[...document.querySelectorAll('.airport-card')];
+
+const faNum=n=>String(n).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const norm=s=>String(s||'').toLowerCase().replace(/ي/g,'ی').replace(/ك/g,'ک').trim();
+
+const provinces=[...new Set(cards.map(card=>card.dataset.province))].sort((a,b)=>a.localeCompare(b,'fa'));
+provinces.forEach(p=>province.insertAdjacentHTML('beforeend',`<option value="${p}">${p}</option>`));
+
+document.getElementById('internationalCount').textContent=faNum(cards.filter(card=>card.dataset.type==='international').length);
+document.getElementById('provinceCount').textContent=faNum(provinces.length);
+
+function render(){
+  const query=norm(q.value);
+  const pr=province.value;
+  const tp=type.value;
+  let visible=0;
+
+  cards.forEach(card=>{
+    const values=[
+      card.dataset.name,
+      card.dataset.en,
+      card.dataset.city,
+      card.dataset.province,
+      card.dataset.iata,
+      card.dataset.icao
+    ];
+    const match=(!pr||card.dataset.province===pr)&&
+                (!tp||card.dataset.type===tp)&&
+                (!query||values.some(v=>norm(v).includes(query)));
+    card.hidden=!match;
+    if(match) visible++;
+  });
+
+  count.textContent=faNum(visible)+' فرودگاه نمایش داده می‌شود';
+}
+
+document.querySelectorAll('.toggle').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const card=btn.closest('.airport-card');
+    card.classList.toggle('open');
+    btn.textContent=card.classList.contains('open')?'بستن جزئیات':'جزئیات بیشتر';
+  });
+});
+
+q.addEventListener('input',render);
+province.addEventListener('change',render);
+type.addEventListener('change',render);
+render();
 </script>
 </body>
 </html>
